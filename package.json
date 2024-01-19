@@ -19,7 +19,7 @@
     "@vue/language-plugin-pug": "^1.8.22",
     "anchor-link": "^3.5.1",
     "anchor-link-browser-transport": "^3.5.1",
-    "axios": "^1.1.2",
+    "axios": "^1.6.0",
     "cids": "^1.1.9",
     "ipfs-core": "^0.18.0",
     "ms": "^2.1.3",
