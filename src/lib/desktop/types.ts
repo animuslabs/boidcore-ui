@@ -1,0 +1,321 @@
+import { string } from "zod"
+
+export interface ChildReturnData {
+  stdout:string[]
+  stderr:string[]
+}
+
+export interface Block {
+  id:string
+  time:Date
+  transactions:string[]
+  reward:number
+  fees:number
+}
+
+export type ChartDataType = number[]
+
+export interface StatsType {
+  totalDiskSizeGB:number
+  safeAvailableGB:number
+  utilizedGB:number
+  freeGB:number
+}
+
+export interface SyncState {
+  startingBlock:number;
+  currentBlock:number;
+  highestBlock:number;
+}
+
+export interface SlotQueueInfo {
+  id:string
+  state:string;
+  error:string;
+  project:number;
+  run:number;
+  clone:number;
+  gen:number;
+  core:string;
+  unit:string;
+  percent_done:string;
+  eta:any;
+  ppd:any;
+  credit_estimate:any;
+  waiting_on:string;
+  next_attempt:any;
+  time_remaining:any;
+  total_frames:number;
+  frames_done:number;
+  assigned:any;
+  timeout:any;
+  deadline:any;
+  ws:string;
+  cs:string;
+  attempts:number;
+  slot:string;
+  tpf:any;
+  base_credit:any;
+}
+
+export interface SimulationInfo {
+  user:string;
+  team:string;
+  project:number;
+  run:number;
+  clone:number;
+  gen:number;
+  core_type:number;
+  core:string;
+  total_iterations:number;
+  iterations_done:number;
+  energy:number;
+  temperature:number;
+  start_time:any;
+  timeout:number;
+  deadline:number;
+  eta:number;
+  progress:number;
+  slot:number;
+}
+
+export interface Options {
+allow:string;
+capture_directory:string;
+capture_on_error:string;
+capture_packets:string;
+capture_requests:string;
+capture_responses:string;
+capture_sockets:string;
+cause:string;
+certificate_file:string;
+checkpoint:number;
+child:string;
+client_subtype:string;
+client_threads:number;
+client_type:string;
+command_address:string;
+command_allow_no_pass:string;
+deny:string;
+command_deny_no_pass:string;
+command_enable:string;
+command_port:number;
+config_rotate:string;
+config_rotate_dir:string;
+config_rotate_max:number;
+connection_timeout:number;
+core_priority:string;
+cpu_species:string;
+cpu_type:string;
+cpu_usage:number;
+cpus:number;
+crl_file:string;
+cuda_index:string;
+cycle_rate:number;
+cycles:number;
+daemon:string;
+debug_sockets:string;
+disable_sleep_when_active:string;
+disable_viz:string;
+dump_after_deadline:string;
+exception_locations:string;
+exit_when_done:string;
+extra_core_args:string;
+fold_anon:string;
+gpu:string;
+gpu_index:string;
+gpu_usage:number;
+gui_enabled:string;
+http_addresses:string;
+https_addresses:string;
+idle:string;
+log:string;
+log_color:string;
+log_crlf:string;
+log_date:string;
+log_date_periodically:number;
+log_domain:string;
+log_domain_levels:string;
+log_header:string;
+log_level:string;
+log_no_info_header:string;
+log_redirect:string;
+log_rotate:string;
+log_rotate_dir:string;
+log_rotate_max:number;
+log_short_level:string;
+log_simple_domains:string;
+log_thread_id:string;
+log_thread_prefix:string;
+log_time:string;
+log_to_screen:string;
+log_truncate:string;
+machine_id:number;
+max_connect_time:number;
+max_connections:number;
+max_packet_size:string;
+max_queue:number;
+max_request_length:number;
+max_shutdown_wait:number;
+max_slot_errors:number;
+max_unit_errors:number;
+max_units:number;
+memory:string;
+min_connect_time:number;
+next_unit_percentage:number;
+priority:string;
+no_assembly:string;
+open_web_control:string;
+opencl_index:string;
+os_species:string;
+os_type:string;
+passkey:string;
+password:string;
+pause_on_battery:string;
+pause_on_start:string;
+performance_mode:string;
+poll_interval:number;
+port:number;
+power_pause:string;
+power_source:string;
+pre_command:string;
+prefetch_units:string;
+priority_decrement:number;
+priority_increment:number;
+proxy:string;
+proxy_enable:string;
+proxy_password:string;
+proxy_user:string;
+pumper:string;
+queue_info:string;
+queued:string;
+quit_when_done:string;
+read_config_dir:string;
+read_config_file:string;
+receive_buffer_size:number;
+reduce_cpu_usage:string;
+report_deadline_misses:string;
+report_task_progress:string;
+reserve_cpu:string;
+reset_on_exit:string;
+results_directory:string;
+results_file:string;
+results_server:string;
+results_url:string;
+return_results:string;
+run_on_batteries:string;
+save_results:string;
+save_state_interval:number;
+save_state_on_exit:string;
+send_buffer_size:number;
+send_gui_rpc_debug:string;
+send_heartbeat:string;
+send_status_updates:string;
+show_projects:string;
+show_projects_files:string;
+skip_cpu_benchmarks:string;
+slot:number;
+sleep_interval:number;
+slot_size:number;
+sockets:number;
+start_hour:number;
+start_minute:number;
+start_day:number;
+start_month:number;
+start_year:number;
+state_file:string;
+state_file_name:string;
+state_file_server:string;
+state_file_url:string;
+stop_after_cpu_benchmarks:string;
+stop_on_battery:string;
+stop_on_start:string;
+store_app_config:string;
+store_global_prefs:string;
+store_global_prefs_override:string;
+store_project_prefs:string;
+store_proxy_info:string;
+store_work_prefs:string;
+suppress_net_info:string;
+suppress_network_config:string;
+suppress_proxy_info:string;
+suppress_stderr:string;
+suppress_stdout:string;
+suspend_if_no_recent_input:string;
+suspend_if_no_recent_output:string;
+suspend_if_no_work:string;
+suspend_network_interfaces:string;
+syslog_facility:string;
+syslog_host:string;
+syslog_level:number;
+system_time_limit:number;
+target_nresults:number;
+target_results_per_wu:number;
+target_wu_completed:number;
+target_wu_created:number;
+team:number;
+test_cpu:string;
+test_cpu_rate:number;
+test_cpu_time:number;
+test_disk:string;
+test_disk_count:number;
+test_disk_interval:number;
+test_disk_size:number;
+test_disk_speed:number;
+test_memory:string;
+test_memory_interval:number;
+test_memory_size:number;
+test_swap:string;
+test_swap_interval:number;
+test_swap_size:number;
+test_while_active:string;
+test_while_idle:string;
+thread_stack_size:number;
+timestamp_files:string;
+trickle_up_interval:number;
+use_all_gpus:string;
+use_all_nics:string;
+use_cert:string;
+use_certs:string;
+use_proxy:string;
+user_name:string;
+validate_state_file:string;
+version_select:string;
+vbox_window:string;
+wait_after_error:number;
+wait_after_finish:number;
+wait_after_start:number;
+wait_interval:number;
+web_browser:string;
+web_control_port:number;
+web_control_addr:string;
+web_gui_only_login:string;
+web_gui_only_password:string;
+web_gui_only_trusted:string;
+web_password:string;
+web_timeout:number;
+web_user:string;
+web_user_name:string;
+web_user_password:string;
+write_config_dir:string;
+write_config_file:string;
+write_state_file:string;
+xfer_ack_deadline:number;
+xml_rpc_endpoint:string;
+xml_rpc_keepalive:string;
+xml_rpc_legacy:string;
+xml_rpc_ssl:string;
+xml_rpc_ssl_cert:string;
+xml_rpc_ssl_key:string;
+xml_rpc_ssl_verify:string;
+xml_rpc_tls:string;
+xml_rpc_tls_cert:string;
+xml_rpc_tls_key:string;
+xml_rpc_tls_verify:string;
+xml_rpc_work_fetch:string;
+}
+
+export interface SlotOptions {
+  machine_id:string,
+  paused:string
+}
