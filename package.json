@@ -43,7 +43,7 @@
     "@volar/vue-language-plugin-pug": "^1.0.6",
     "autoprefixer": "^10.4.2",
     "cheerio": "^1.0.0-rc.12",
-    "electron": "^22.0.0",
+    "electron": "^22.3.25",
     "electron-packager": "^15.2.0",
     "eslint": "^8.10.0",
     "eslint-config-standard": "^17.0.0",
