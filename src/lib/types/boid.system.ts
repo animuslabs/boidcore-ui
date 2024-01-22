@@ -53,7 +53,7 @@ export class AccountPower extends Struct {
     @Struct.field(UInt16) last_added_round!:UInt16
     @Struct.field(UInt32) rating!:UInt32
     @Struct.field(UInt16, { array: true }) history!:UInt16[]
-    @Struct.field(AccountBooster, { array: true }) mods!:AccountBooster[]
+    @Struct.field(AccountBooster, { array: true }) boosters!:AccountBooster[]
 }
 
 @Struct.type("AccountTeam")
@@ -105,7 +105,7 @@ export class Action extends Struct {
     @Struct.field(Bytes) data!:Bytes
 }
 
-@Variant.type("AtomicValue", [Int8, Int16, Int32, Int64, UInt8, UInt16, UInt32, UInt64, Float32, Float64])
+@Variant.type("AtomicValue", [Int8, Int16, Int32, Int64, UInt8, UInt16, UInt32, UInt64, Float32, Float64, { type: Int8, array: true }, { type: Int16, array: true }, { type: Int32, array: true }, { type: Int64, array: true }, Bytes, { type: UInt16, array: true }, { type: UInt32, array: true }, { type: UInt64, array: true }, { type: Float32, array: true }, { type: Float64, array: true }])
 class AtomicValue extends Variant {}
 
 @Struct.type("AtomicAttribute")
@@ -120,7 +120,7 @@ export class AtomicFormat extends Struct {
     @Struct.field("string") type!:string
 }
 
-@Struct.type("AuthRow")
+@Struct.type("Auth")
 export class AuthRow extends Struct {
     @Struct.field(Name) boid_id_auth!:Name
 }
@@ -339,7 +339,7 @@ export class Sponsor extends Struct {
     @Struct.field(UInt32) upgrades_total_earned!:UInt32
 }
 
-@Struct.type("DelegStake")
+@Struct.type("Stake")
 export class DelegStake extends Struct {
     @Struct.field(UInt64) stake_id!:UInt64
     @Struct.field(Name) from_boid_id!:Name
@@ -512,7 +512,7 @@ export class InviteRm extends Struct {
 export class Logpwradd extends Struct {
     @Struct.field(Name) boid_id!:Name
     @Struct.field(UInt16) received!:UInt16
-    @Struct.field(UInt16) from_mult_mods!:UInt16
+    @Struct.field(UInt16) from_mult_boosters!:UInt16
     @Struct.field(UInt16) diverted_to_sponsor!:UInt16
     @Struct.field(UInt16) power_increased!:UInt16
     @Struct.field(Name) orign!:Name

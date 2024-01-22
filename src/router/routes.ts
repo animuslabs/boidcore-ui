@@ -13,7 +13,7 @@ const routes:RouteRecordRaw[] = [
       { path: "/sponsor", name: "sponsor", component: () => import("pages/Sponsor.vue") },
       { path: "/wallet", name: "wallet", component: () => import("pages/Wallet.vue") },
       { path: "/t/:name?", name: "team", component: () => import("pages/Team.vue") },
-      { path: "/booster/:id?", name: "boster", component: () => import("pages/Boosters.vue") },
+      { path: "/booster/:id?", name: "booster", component: () => import("pages/Boosters.vue") },
       { path: "/offer/:id?", name: "offer", component: () => import("pages/Offers.vue") }
     ]
   },

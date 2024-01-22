@@ -17,26 +17,7 @@ q-page(padding)
             .row
               div.text-weight-light Sponsored accounts can be upgraded to gold accounts at any time.
             .row
-              div.text-weight-light To get an invite code, you can join our #[a(href="") Telegram] or #[a(href="") Discord] and ask.
-            //- .centered.q-gutter-md.items-center
-            //-   .col-auto
-            //-     .row
-            //-       h6 Sponsor
-            //-     .row
-            //-       q-input(v-model="sponsorName" :error="Boolean(errorMsg)" noErrorIcon)
-            //-   .col-auto
-            //-     .row
-            //-       h6 Invite Code
-            //-     .row
-            //-       q-input(v-model="inviteCode" :error="Boolean(errorMsg)" noErrorIcon)
-            //-   .col-auto
-            //-     .row
-            //-       h6 Key
-            //-     .row
-            //-       q-input(v-model="key" :error="Boolean(errorMsg)" noErrorIcon)
-            //- .centered.q-mt-lg
-            //-   .col-3(style="width:100px;")
-            //-     q-btn(label="submit" type="submit")
+              div.text-weight-light To get an invite code, you can join our #[a(href="https://t.me/boidcommunity") Telegram] and ask.
         .centered.q-mt-md
           h4 {{errorMsg}}
     .centered.q-mt-lg
@@ -46,11 +27,13 @@ q-page(padding)
           q-form(@submit="startGoldPurchase()")
             h5 Gold Account
             .row
-              div.text-weight-light Gold accounts can be purchased at any time, the cost is based on the length of the Boid ID.
+              div.text-weight-light Gold accounts can be purchased at any time using BOID tokens, the cost is based on the length of the Boid ID.
             .row
               div.text-weight-light Gold accounts can be created with a premium Boid ID which is shorter than normal Boid IDs.
             .row
               div.text-weight-light You can pay for the account using a chain account and anchor wallet or directly from an existing Boid Account.
+            .row
+              div.text-weight-light learn more about BOID tokens #[a(href="https://docs.boid.com/boidcore/tokenomics") here].
             .row.q-gutter-md.items-center.q-mt-md
               .col-auto
                 .row
