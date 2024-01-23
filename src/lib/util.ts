@@ -70,3 +70,15 @@ export async function bytesToJson<T>(bytes:Bytes):Promise<T> {
     throw new Error("Error converting bytes to JSON" + error)
   }
 }
+
+export function downloadStringAsTextFile(content:string, filename:string) {
+  const blob = new Blob([content], { type: "text/plain" })
+  const url = URL.createObjectURL(blob)
+  const anchor = document.createElement("a")
+  anchor.href = url
+  anchor.download = filename
+  document.body.appendChild(anchor)
+  anchor.click()
+  document.body.removeChild(anchor)
+  URL.revokeObjectURL(url)
+}

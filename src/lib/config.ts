@@ -1,7 +1,17 @@
 import { LocalStorage } from "quasar"
 import { reloadHistory, reloadTrpc } from "src/lib/trpc"
 
+export const activeChain = "telos"
 type Configs = "telos" | "telosTest"
+export const defaultRelayer:Record<Configs, string> = {
+  telos: "https://relayer.boid.com",
+  telosTest: "https://testnet.relayer.boid.com"
+}
+export const defaultHistory:Record<Configs, string> = {
+  telos: "https://history.boid.com",
+  telosTest: "https://testnet.history.boid.com"
+}
+
 export type Config = {
   contracts:{
     token:string,
@@ -30,7 +40,7 @@ const configs:Record<Configs, Config> = {
     },
     tokenSymbol: "4,BOID",
     explorer: "https://explorer-test.telos.net",
-    relayer: getActiveRelayer("telosTest") || "https://testnet.relayer.boid.com"
+    relayer: getActiveRelayer("telosTest")
   },
   telos: {
     contracts: {
@@ -44,28 +54,27 @@ const configs:Record<Configs, Config> = {
     },
     tokenSymbol: "4,BOID",
     explorer: "https://explorer.telos.net",
-    relayer: getActiveRelayer("telos") || "https://relayer.boid.com"
+    relayer: getActiveRelayer("telos")
   }
 }
 
-export const activeChain = "telos"
 export default configs[activeChain]
 
-export function getActiveRelayer(chainName:string) {
-  const saved = LocalStorage.getItem("relayer-" + chainName)
-  if (!saved) return false
-  else return saved as string
-}
 export function setRelayer(relayer:string) {
   LocalStorage.set("relayer", relayer)
   reloadTrpc()
 }
-export function getActiveHistory() {
-  const saved = LocalStorage.getItem("history")
-  if (!saved) return "https://history.testnet.boid.com"
+export function getActiveHistory(chainName:Configs = activeChain) {
+  const saved = LocalStorage.getItem("history-" + activeChain)
+  if (!saved) return defaultHistory[chainName]
   else return saved as string
 }
 export function setHistory(history:string) {
-  LocalStorage.set("history", history)
+  LocalStorage.set("history-" + activeChain, history)
   reloadHistory()
+}
+export function getActiveRelayer(chainName:Configs = activeChain) {
+  const saved = LocalStorage.getItem("relayer-" + chainName)
+  if (!saved) return defaultRelayer[chainName]
+  else return saved as string
 }

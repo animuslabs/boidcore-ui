@@ -1,10 +1,12 @@
 import { boot } from "quasar/wrappers"
 import { getName } from "@tauri-apps/api/app"
 import config from "src/lib/config"
+import { initTRPC } from "src/lib/trpc"
 //@ts-ignore
 window.global ||= window
 
 export default boot(async({ app }) => {
+  initTRPC()
   const appName = await getName().catch(_err => console.log("not running in desktop mode"))
   if (appName == "boid-desktop") {
     console.log("running in desktop mode")

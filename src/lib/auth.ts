@@ -26,8 +26,8 @@ export async function signActions(privKey:PrivateKey, actions:AnyAction[], nonce
   const accountBytes = Serializer.encode({ type: Name, object: boid_id })
 
   message.append(nonceBytes)
-  // message.append(expiresBytes)
-  // message.append(chainNameBytes)
+  message.append(expiresBytes)
+  message.append(chainNameBytes)
   // message.append(accountBytes)
 
   const sig = privKey.signMessage(message.array)

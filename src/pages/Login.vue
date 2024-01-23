@@ -17,7 +17,7 @@ div.q-ma-md
         q-input( @focus="clearError()" v-model="boidIdPw" inputStyle="font-size:25px; text-align:center" type="password" )
         .q-mt-md
         .row
-          q-checkbox(v-model="savePw" label="Remember Password")
+          //- q-checkbox(v-model="savePw" label="Remember Password")
           .col-grow
           q-btn(label="login" color="primary" :flat="false" :disable="disableLogin" type="submit")
         .centered
@@ -47,22 +47,6 @@ div.q-ma-md
   .centered.q-pt-md(v-if="!hideAdvanced")
     q-btn(label="advanced login" icon="person" outline :flat="false" v-if="!advanced" @click="advanced = true")
     q-btn(label="basic login" icon="person" outline :flat="false" v-if="advanced" @click="advanced = false")
-  //- q-separator(spaced="20px")
-  //- .centered.full-width.q-ma-lg
-  //-   .row.no-wrap
-  //-     .row.q-ma-md
-  //-       p Logged In: {{acct.loggedIn}}
-  //- .centered.full-width.q-ma-lg
-  //-   .row
-  //-     p Saved
-  //- .centered.full-width.q-ma-lg
-  //-   .row
-  //-     q-list
-  //-       div(v-for="key,name of acct.saved")
-  //-         div {{name}}
-  //-         div {{key}}
-  //-         q-btn(label="login" @click="acct.login(name)")
-  //-         q-btn(icon="delete" color="red" @click="acct.delSaved(name)")
 
 </template>
 
@@ -76,6 +60,7 @@ import { keyFromString } from "src/lib/auth"
 import { Account } from "src/lib/types/boid.system"
 import { link } from "src/lib/linkManager"
 import { linkAccount } from "src/stores/linkAccount"
+import { downloadStringAsTextFile } from "src/lib/util"
 
 export default defineComponent({
   emits: {
@@ -141,6 +126,8 @@ export default defineComponent({
           return
         }
         console.log("key index:", keyIndx)
+        const txt = `boid id: ${this.boidIdInput.toLowerCase().trim()}\nemail: ${this.emailInput.toLowerCase().trim()}\npw: ${this.boidIdPw.trim()}`
+        downloadStringAsTextFile(txt, `boid-backup-${this.boidIdInput.toLowerCase().trim()}.txt`)
         this.acct.saveAcct(this.boidIdInput, key, this.savePw)
         this.acct.login(this.boidIdInput, this.savePw)
         if (this.redirect) this.$router.push({ name: "account", params: { name: this.boidIdInput.toLowerCase() } })

@@ -11,7 +11,7 @@ q-dialog(ref="dialog" @hide="onDialogHide" )
           h5 IPFS Gateway
           q-input(v-model="ipfsInput" inputStyle="font-size:20px; text-align:center")
         div.q-mt-lg
-          h5 Chain RPC (Telos Testnet)
+          h5 Chain RPC (Telos Mainnet)
           q-input(v-model="chainRpcInput" inputStyle="font-size:20px; text-align:center")
         div.q-mt-lg
           h5 Boid History
@@ -24,7 +24,7 @@ q-dialog(ref="dialog" @hide="onDialogHide" )
 <script lang="ts">
 import { APIClient } from "anchor-link"
 import { QDialog } from "quasar"
-import config, { getActiveHistory, getActiveRelayer, setHistory, setRelayer } from "src/lib/config"
+import config, { getActiveHistory, getActiveRelayer, setHistory, setRelayer, activeChain } from "src/lib/config"
 import { getIpfsGateway, setIpfsGateway } from "src/lib/ipfs"
 import { link, getRpc } from "src/lib/linkManager"
 
@@ -39,7 +39,7 @@ export default {
   },
   emits: ["ok", "hide"],
   mounted() {
-    this.relayerInput = getActiveRelayer()
+    this.relayerInput = getActiveRelayer(activeChain)
     this.ipfsInput = getIpfsGateway()
     this.chainRpcInput = getRpc()
     this.boidHistoryInput = getActiveHistory()

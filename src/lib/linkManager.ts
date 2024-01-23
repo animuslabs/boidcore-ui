@@ -3,7 +3,7 @@ import { LocalStorage } from "quasar"
 import AnchorLink, { LinkChannelSession, APIClient, ChainId, LinkSession, PermissionLevel, TransactArgs } from "anchor-link"
 import AnchorLinkBrowserTransport from "anchor-link-browser-transport"
 import { linkAccount } from "src/stores/linkAccount"
-import config from "src/lib/config"
+import config, { activeChain } from "src/lib/config"
 // const client = new APIClient({ url: "https://eos.api.animus.is" })
 // const client = new APIClient({ url: "https://testnet.telos.caleos.io" })
 const client = new APIClient({ url: "https://telos.testnet.boid.animus.is" })
@@ -33,7 +33,7 @@ class LinkManager {
     const newClient = new APIClient({ url: client })
     this.client = newClient
     this.rpc = newClient.v1.chain
-    LocalStorage.set("chainRpc", client)
+    LocalStorage.set("chainRpc-" + activeChain, client)
   }
 
   async transact(args:TransactArgs) {
@@ -136,7 +136,7 @@ function init() {
   link.setApi(getRpc())
 }
 export function getRpc() {
-  return LocalStorage.getItem("chainRpc") as string || config.linkData.nodeUrl
+  return LocalStorage.getItem("chainRpc-" + activeChain) as string || config.linkData.nodeUrl
 }
 
 export { link, init }
