@@ -60,8 +60,8 @@ const configs:Record<Configs, Config> = {
 
 export default configs[activeChain]
 
-export function setRelayer(relayer:string) {
-  LocalStorage.set("relayer", relayer)
+export function setRelayer(relayer:string, chainName:Configs = activeChain) {
+  LocalStorage.set("relayer-" + chainName, relayer)
   reloadTrpc()
 }
 export function getActiveHistory(chainName:Configs = activeChain) {
