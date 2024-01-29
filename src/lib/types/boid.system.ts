@@ -105,7 +105,7 @@ export class Action extends Struct {
     @Struct.field(Bytes) data!:Bytes
 }
 
-@Variant.type("AtomicValue", [Int8, Int16, Int32, Int64, UInt8, UInt16, UInt32, UInt64, Float32, Float64, { type: Int8, array: true }, { type: Int16, array: true }, { type: Int32, array: true }, { type: Int64, array: true }, Bytes, { type: UInt16, array: true }, { type: UInt32, array: true }, { type: UInt64, array: true }, { type: Float32, array: true }, { type: Float64, array: true }])
+@Variant.type("AtomicValue", [Int8, Int16, Int32, Int64, UInt8, UInt16, UInt32, UInt64, Float32, Float64])
 class AtomicValue extends Variant {}
 
 @Struct.type("AtomicAttribute")
@@ -120,7 +120,7 @@ export class AtomicFormat extends Struct {
     @Struct.field("string") type!:string
 }
 
-@Struct.type("Auth")
+@Struct.type("AuthRow")
 export class AuthRow extends Struct {
     @Struct.field(Name) boid_id_auth!:Name
 }
@@ -339,7 +339,7 @@ export class Sponsor extends Struct {
     @Struct.field(UInt32) upgrades_total_earned!:UInt32
 }
 
-@Struct.type("Stake")
+@Struct.type("DelegStake")
 export class DelegStake extends Struct {
     @Struct.field(UInt64) stake_id!:UInt64
     @Struct.field(Name) from_boid_id!:Name
@@ -661,6 +661,11 @@ export class TeamEdit extends Struct {
     @Struct.field(UInt8) min_pwr_tax_mult!:UInt8
     @Struct.field(UInt8) owner_cut_mult!:UInt8
     @Struct.field("string") url_safe_name!:string
+}
+
+@Struct.type("team.setmeta")
+export class TeamSetmeta extends Struct {
+    @Struct.field(UInt8) team_id!:UInt8
     @Struct.field(Bytes) meta!:Bytes
 }
 
