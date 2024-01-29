@@ -71,7 +71,7 @@ q-page(padding)
               .row
                 h6.no-margin Boosters
               .row
-                div {{targetRow.power.mods}}
+                div {{targetRow.power.boosters}}
             q-card.q-pa-md
               .centered
                 h5 Stake
