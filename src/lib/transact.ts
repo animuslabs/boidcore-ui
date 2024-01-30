@@ -35,7 +35,7 @@ export const sysActions = {
   endUnstake: () => createAct("unstake.end", UnstakeEnd.from({ boid_id: boidAccount().loggedIn })),
   stopUnstake: () => createAct("unstake.stop", UnstakeStop.from({ boid_id: boidAccount().loggedIn })),
   withdraw: (quantity:number|UInt32, to:NameType) => createAct("withdraw", Withdraw.from({ boid_id: boidAccount().loggedIn, quantity, to })),
-  internalxfer: (quantity:number | UInt32, to_boid_id:NameType) => createAct("internalxfer", Internalxfer.from({ from_boid_id: boidAccount().loggedIn, quantity, to_boid_id, memo: "" })),
+  internalxfer: (quantity:number | UInt32, to_boid_id:NameType, memo = "") => createAct("internalxfer", Internalxfer.from({ from_boid_id: boidAccount().loggedIn, quantity, to_boid_id, memo })),
   claimOffer: (offer_id:UInt64Type) => createAct("offer.claim", OfferClaim.from({ boid_id: boidAccount().loggedIn, offer_id, required_nft_action_ids: [] })),
   acctBuy: (data:{ boid_id:NameType, keys:PublicKeyType[], owners:NameType[] }) => createAct("account.buy", AccountBuy.from({ payer_boid_id: boidAccount().loggedIn, new_account: data })),
   pwrClaim: () => createAct("power.claim", PowerClaim.from({ boid_id: boidAccount().loggedIn })),
@@ -119,6 +119,7 @@ export async function sendAuthActions(actions:AnyAction[], additional?:Additiona
     console.log("data", body)
 
     notify = transactNotify()
+    //@ts-ignore
     const result = await trpc.pushActions.mutate(body)
     console.log(result)
     transactNotify(result, notify)
@@ -131,26 +132,6 @@ export async function sendAuthActions(actions:AnyAction[], additional?:Additiona
   }
 }
 interface CreateType {boid_id:NameType, keys:PublicKey[], owners:NameType[]}
-export async function sendInviteClaimAction(create:CreateType, sponsor_boid_id:string, invite_code:number, claimKey:PrivateKey) {
-  const notify = transactNotify()
-  try {
-    const new_account = AccountCreate.from(create)
-    const data = {
-      sponsor_boid_id,
-      invite_code,
-      sig: (await signInviteCode(claimKey, invite_code, new_account)).toString(),
-      new_account: JSON.parse(JSON.stringify(new_account))
-    }
-    const result = await trpc.claimInvite.mutate(data)
-    console.log(result)
-    transactNotify(result, notify)
-    return result
-  } catch (error:any) {
-    console.error(error)
-    alert(error.toString())
-    transactNotify(error, notify, true)
-  }
-}
 
 function transactNotify(data?:any, cb?:any, error = false) {
   if (!data) {

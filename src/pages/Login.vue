@@ -61,6 +61,7 @@ import { Account } from "src/lib/types/boid.system"
 import { link } from "src/lib/linkManager"
 import { linkAccount } from "src/stores/linkAccount"
 import { downloadStringAsTextFile } from "src/lib/util"
+import { Notify } from "quasar"
 
 export default defineComponent({
   emits: {
@@ -127,7 +128,20 @@ export default defineComponent({
         }
         console.log("key index:", keyIndx)
         const txt = `boid id: ${this.boidIdInput.toLowerCase().trim()}\nemail: ${this.emailInput.toLowerCase().trim()}\npw: ${this.boidIdPw.trim()}`
-        downloadStringAsTextFile(txt, `boid-backup-${this.boidIdInput.toLowerCase().trim()}.txt`)
+        Notify.create({
+          message: "Please backup your login credentials",
+          timeout: 8000,
+          icon: "priority_high",
+          iconColor: "white",
+          actions: [{
+            label: "Download Backup",
+            color: "warning",
+
+            handler: () => {
+              downloadStringAsTextFile(txt, `boid-backup-${this.boidIdInput.toLowerCase().trim()}.txt`)
+            }
+          }]
+        })
         this.acct.saveAcct(this.boidIdInput, key, this.savePw)
         this.acct.login(this.boidIdInput, this.savePw)
         if (this.redirect) this.$router.push({ name: "account", params: { name: this.boidIdInput.toLowerCase() } })
