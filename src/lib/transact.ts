@@ -164,3 +164,25 @@ function transactNotify(data?:any, cb?:any, error = false) {
     }) // eslint-disable-line n/no-callback-literal
   }
 }
+
+export async function sendInviteClaimAction(create:CreateType, sponsor_boid_id:string, invite_code:number, claimKey:PrivateKey) {
+  const notify = transactNotify()
+  try {
+    const new_account = AccountCreate.from(create)
+    const data = {
+      sponsor_boid_id,
+      invite_code,
+      sig: (await signInviteCode(claimKey, invite_code, new_account)).toString(),
+      new_account: JSON.parse(JSON.stringify(new_account))
+    }
+    //@ts-ignore
+    const result = await trpc.claimInvite.mutate(data)
+    console.log(result)
+    transactNotify(result, notify)
+    return result
+  } catch (error:any) {
+    console.error(error)
+    alert(error.toString())
+    transactNotify(error, notify, true)
+  }
+}
