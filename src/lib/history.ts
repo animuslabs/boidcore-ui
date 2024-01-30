@@ -10,6 +10,7 @@ export async function accountFeed(boid_id:NameType, page = 1) {
   start.setSeconds(0)
   start.setMinutes(0)
   start.setMilliseconds(0)
+  //@ts-ignore
   const result = await history.actions.query({
     actions: ["account.edit", "account.free", "auth.addkey", "auth.rmkey", "internalxfer", "invite.add", "invite.claim", "offer.claim", "owner.add", "owner.rm", "pwrmod.add", "pwrmod.rm", "stake", "stake.deleg", "team.change", "unstake.init", "unstake.stop", "unstake.end", "withdraw"],
     // actions: ["account.edit"],

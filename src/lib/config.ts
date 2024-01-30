@@ -25,6 +25,10 @@ export type Config = {
   },
   explorer:string,
   relayer:string,
+  relayers:string[],
+  history:string[],
+  chainRPCs:string[],
+  ipfs:string[],
   desktopMode?:boolean
 }
 const configs:Record<Configs, Config> = {
@@ -40,7 +44,11 @@ const configs:Record<Configs, Config> = {
     },
     tokenSymbol: "4,BOID",
     explorer: "https://explorer-test.telos.net",
-    relayer: getActiveRelayer("telosTest")
+    relayer: getActiveRelayer("telosTest"),
+    relayers: ["https://testnet.relayer.boid.com"],
+    history: ["https://testnet.history.boid.com"],
+    chainRPCs: ["https://testnet.telos.net"],
+    ipfs: ["https://ipfs.boid.com", "https://ipfs.pintastic.link", "https://ipfs.io"]
   },
   telos: {
     contracts: {
@@ -54,7 +62,11 @@ const configs:Record<Configs, Config> = {
     },
     tokenSymbol: "4,BOID",
     explorer: "https://explorer.telos.net",
-    relayer: getActiveRelayer("telos")
+    relayer: getActiveRelayer("telos"),
+    relayers: ["https://relayer.boid.com", "https://relay.boid.animus.is"],
+    history: ["https://history.boid.com", "https://history.boid.animus.is"],
+    chainRPCs: ["https://mainnet.telos.net", "https://telos.api.animus.is"],
+    ipfs: ["https://ipfs.boid.com", "https://ipfs.pintastic.link", "https://ipfs.io"]
   }
 }
 
