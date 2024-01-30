@@ -43,6 +43,6 @@ export const mainNav:QRouteTabProps[] = [
   { icon: "fa-solid fa-gift", label: "Sponsor", to: { name: "sponsor" } },
   { icon: "person_add", label: "Join", to: { name: "join" } },
   { icon: "workspaces", label: "Teams", to: { name: "team" } },
-  { icon: "fa-solid fa-cloud-bolt", label: "Boosters", to: { name: "boster" } },
+  { icon: "fa-solid fa-cloud-bolt", label: "Boosters", to: { name: "booster" } },
   { icon: "swap_horiz", label: "Offers", to: { name: "offer" } }
 ]

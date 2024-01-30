@@ -95,7 +95,6 @@ const tabs:QTabsProps = {
   contentClass: "boid-tabs"
 }
 export default defineComponent({
-  name: "MainLayout",
   components: {
   },
   setup() {
