@@ -205,6 +205,7 @@ import { AccountMeta } from "src/lib/types/types"
 import { accountFeed } from "src/lib/history"
 import { bytesToJson, sleep } from "src/lib/util"
 import AddOwner from "src/components/dialog/addOwner.vue"
+import { string } from "zod"
 
 export default defineComponent({
   setup() {
@@ -220,7 +221,8 @@ export default defineComponent({
       delegatedStakeTo: "",
       delegatedStakeRounds: 0,
       historyFeed: [] as any[],
-      targetMetaValue: null as null | Record<string, any>
+      targetMetaValue: null as null | Record<string, any>,
+      newOwnerName: "" as string
     }
   },
   async mounted() {
@@ -259,25 +261,45 @@ export default defineComponent({
         })
     },
     async addOwner() {
-      let loggedIn = linkAccount().loggedIn.account
       if (!this.targetRow) return
-      if (!loggedIn) {
-        await linkAccount().login()
-        loggedIn = linkAccount().loggedIn.account
+      let newOwner:string|null = null
+      if (this.targetRow.owners.length > 0) {
+        let loggedIn = linkAccount().loggedIn.account
+        if (!loggedIn) {
+          await linkAccount().login()
+          const account = linkAccount().loggedIn.account
+          if (!account) return
+          newOwner = account
+        }
+        if (!newOwner) return
+      } else {
+        Dialog.create({
+          prompt: {
+            model: this.newOwnerName
+          },
+          title: "Add owner",
+          message: "Enter the chain account name to add to this boid account as an owner"
+
+        }).onOk(async(data) => {
+          console.log(data)
+          console.log("new owner: ", data)
+          await sendAuthActions([sysActions.addOwner(data)])
+          await sleep(1000)
+          await this.loadAccount(newOwner)
+        })
       }
-      if (!loggedIn) return
 
       if (this.targetRow.owners.length == 0) {
-        await sendAuthActions([sysActions.addOwner(loggedIn)])
-        await sleep(1000)
-        await this.loadAccount(loggedIn)
+        // await sendAuthActions([sysActions.addOwner(loggedIn)])
+        // await sleep(1000)
+        // await this.loadAccount(loggedIn)
       } else {
         Dialog.create({ component: AddOwner, componentProps: { accountName: this.acct.loggedIn } })
           .onOk(async({ newOwnerName }) => {
             console.log("new owner: ", newOwnerName)
             await doActions([sysActions.addOwner(newOwnerName)])
             await sleep(1000)
-            await this.loadAccount(loggedIn)
+            await this.loadAccount(newOwner)
           })
       }
     },

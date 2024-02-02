@@ -31,11 +31,17 @@ q-layout.relative-position
               q-item-label {{ name }}
             q-item-section(side)
               q-btn(icon="delete" color="red" dense size="sm" rounded @click="acct.delSaved(name)")
-          q-item.text-primary.text-weight-bold(clickable v-close-popup @click="user.login()")
+          q-item.text-primary.text-weight-bold(clickable v-close-popup @click="user.login()" v-if="!user.loggedIn.account" )
             q-item-section(avatar)
               q-icon(name="login")
             q-item-section
               q-item-label.text-grey-8 Anchor Login
+            q-item-section(side)
+          q-item.text-primary.text-weight-bold(clickable v-close-popup @click="user.logout()" v-if="user.loggedIn.account")
+            q-item-section(avatar)
+              q-icon(name="logout")
+            q-item-section
+              q-item-label.text-grey-8 Anchor Logout
             q-item-section(side)
           q-item.text-primary.text-weight-bold(clickable v-close-popup @click="user.logout()" v-for="session of link.getSessions()")
             q-item-section(avatar)
