@@ -37,6 +37,7 @@ q-item.bg-grey-2.rounded-borders
 </template>
 
 <script lang="ts">
+import { UInt64 } from "anchor-link"
 import { Dialog } from "quasar"
 import { sendAuthActions, sysActions } from "src/lib/transact"
 import { Offer, OfferAction, OfferRequirements, OfferRewards } from "src/lib/types/boid.system"
@@ -55,7 +56,8 @@ export default defineComponent({
   data() {
     return {
       round: 0,
-      currentRound
+      currentRound,
+      targetAssetId: ""
     }
   },
   async mounted() {
@@ -69,17 +71,22 @@ export default defineComponent({
         </br>
         <h5>Actions:</h5>
         <pre>${JSON.stringify(this.offer.actions, null, 2)}</pre>
+        <h5>NFT ID if required:</h5>
         `,
         html: true,
         ok: { label: "Claim" },
-        cancel: true
-      }).onOk(async() => {
+        cancel: true,
+        prompt: {
+          model: this.targetAssetId
+        }
+      }).onOk(async(nftId) => {
+        console.log("nft given:", nftId, "from:", typeof nftId)
         const acct = boidAccount().loggedIn
-        if (!acct) return
+        if (!acct) return alert("login to claim offer")
         await sysTables().loadAccount(acct)
         const acctRow = sysTables().accounts[acct]
         if (!acctRow) return
-        let actions = [sysActions.claimOffer(this.offer.offer_id)]
+        let actions = [sysActions.claimOffer(this.offer.offer_id, nftId.length > 0 ? [nftId] : [])]
         console.log("last claimed:", acctRow.power.last_claimed_round.toNumber())
         console.log("current round:", currentRound())
         if (acctRow.power.last_claimed_round.toNumber() != currentRound()) await sendAuthActions([sysActions.pwrClaim()])

@@ -36,7 +36,7 @@ export const sysActions = {
   stopUnstake: () => createAct("unstake.stop", UnstakeStop.from({ boid_id: boidAccount().loggedIn })),
   withdraw: (quantity:number|UInt32, to:NameType) => createAct("withdraw", Withdraw.from({ boid_id: boidAccount().loggedIn, quantity, to })),
   internalxfer: (quantity:number | UInt32, to_boid_id:NameType, memo = "") => createAct("internalxfer", Internalxfer.from({ from_boid_id: boidAccount().loggedIn, quantity, to_boid_id, memo })),
-  claimOffer: (offer_id:UInt64Type) => createAct("offer.claim", OfferClaim.from({ boid_id: boidAccount().loggedIn, offer_id, required_nft_action_ids: [] })),
+  claimOffer: (offer_id:UInt64Type, required_nft_action_ids:UInt64Type[] = []) => createAct("offer.claim", OfferClaim.from({ boid_id: boidAccount().loggedIn, offer_id, required_nft_action_ids })),
   acctBuy: (data:{ boid_id:NameType, keys:PublicKeyType[], owners:NameType[] }) => createAct("account.buy", AccountBuy.from({ payer_boid_id: boidAccount().loggedIn, new_account: data })),
   pwrClaim: () => createAct("power.claim", PowerClaim.from({ boid_id: boidAccount().loggedIn })),
   addOwner: (owner:NameType) => createAct("owner.add", OwnerAdd.from({ boid_id: boidAccount().loggedIn, owner })),
