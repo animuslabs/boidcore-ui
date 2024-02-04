@@ -1,5 +1,5 @@
 <template lang="pug">
-q-item.non-selectable(:clickable="!parsedOffer.disabled" @click="claimOffer()").bg-grey-2.rounded-borders
+q-item.bg-grey-2.rounded-borders
   div.q-mb-md.q-mt-sm.full-width
     .row.full-width
       .col-auto
@@ -11,10 +11,19 @@ q-item.non-selectable(:clickable="!parsedOffer.disabled" @click="claimOffer()").
         h6(v-if="parsedOffer.actions") Required Actions
         div(v-if="act.balance_payment.toNumber()> 0")
           div Pay: {{act.balance_payment.toNumber().toLocaleString()}} BOID
+      .col-auto(v-if="act.nft_actions.length>0")
+        h6 NFT Actions
+        div(v-for="(action,i) in act.nft_actions")
+          div Required NFT Template: #[a(:href="`https://telos.neftyblocks.com/templates/nft.boid/${action.template_id.toString()}`" target="_blank" ) {{action.template_id}}]
+            q-tooltip
+              p The NFT Template you need to deposit
+          div Lock Rounds: {{action.lock_rounds}}
+            q-tooltip
+              p How many rounds in the future the NFT will be locked for when this offer is triggered
       .col-auto
         h6 Rewards
         div(v-if="rwrd.activate_booster_ids.length>0")
-          div Activates PwrMod: {{rwrd.activate_booster_ids.array.toString()}}
+          div(v-for="boosterId of rwrd.activate_booster_ids") Activates Booster: #[a(href="" @click.prevent="null" @click="$router.push({name:'booster',params:{id:boosterId.toString()}})") {{boosterId}}]
       .col-grow
       .col-auto
         div Quantity Remaining: {{offer.limits.offer_quantity_remaining.toNumber().toLocaleString()}}
@@ -22,6 +31,8 @@ q-item.non-selectable(:clickable="!parsedOffer.disabled" @click="claimOffer()").
         div Total Claimed: {{offer.total_claimed.toNumber().toLocaleString()}}
         //- div {{offer.limits}}
         //- div {{currentRound()}}
+      .col-auto.items-center
+        q-btn(label="claim" :disable="parsedOffer.disabled" @click="claimOffer()" outline)
 
 </template>
 
