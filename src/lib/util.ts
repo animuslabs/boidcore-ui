@@ -1,4 +1,5 @@
-import { UInt16, Bytes } from "anchor-link"
+import { UInt16, Bytes, UInt16Type } from "anchor-link"
+import ms from "ms"
 import { date } from "quasar"
 import { trpc } from "src/lib/trpc"
 import { sysTables } from "src/stores/sysTables"
@@ -18,15 +19,16 @@ export function roundStartTime(round:number|UInt16) {
 }
 function getTimeData() {
   const sys = sysTables()
-  const data = {
-    roundLengthMs: 3600000,
-    roundsStartedMs: 1697766227000
+  return {
+    roundLengthMs: (sys.config?.time.round_length_sec?.toNumber() || 46800) * 1000,
+    roundsStartedMs: (sys.config?.time.rounds_start_sec_since_epoch?.toNumber() || 1705967066) * 1000
   }
-  if (sys.config) {
-    data.roundLengthMs = sys.config.time.round_length_sec.toNumber() * 1000
-    data.roundsStartedMs = sys.config.time.rounds_start_sec_since_epoch.toNumber() * 1000
-  }
-  return data
+}
+
+export function roundsToDays(numRounds:UInt16Type) {
+  const data = getTimeData()
+  const oneDay = ms("1d") / data.roundLengthMs
+  return oneDay * parseInt(numRounds.toString())
 }
 
 export function currentRound():number {

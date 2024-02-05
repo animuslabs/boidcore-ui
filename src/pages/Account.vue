@@ -65,13 +65,15 @@ q-page(padding)
               .row
                 div {{targetRow.power.rating}}
               .row
-                h6.no-margin Last Claimed Round
+                h6.no-margin Last Claimed Round: {{targetRow.power.last_claimed_round}}
               .row
-                div {{targetRow.power.last_claimed_round}}
+                div  {{ roundStartTime(targetRow.power.last_claimed_round).toLocaleString() }}
               .row
                 h6.no-margin Boosters
               .row
-                div {{targetRow.power.boosters}}
+                account-booster(v-for="booster of targetRow.power.boosters" :booster="booster")
+                //- div {{targetRow.power.boosters}}
+                //- div {{ currentRound() }}
             q-card.q-pa-md
               .centered
                 h5 Stake
@@ -203,13 +205,14 @@ import { CID } from "multiformats/cid"
 import { parseAccountMeta, ParsedAccountMeta } from "src/lib/account"
 import { AccountMeta } from "src/lib/types/types"
 import { accountFeed } from "src/lib/history"
-import { bytesToJson, sleep } from "src/lib/util"
+import { bytesToJson, sleep, currentRound, roundStartTime } from "src/lib/util"
 import AddOwner from "src/components/dialog/addOwner.vue"
 import { string } from "zod"
+import AccountBooster from "src/components/AccountBooster.vue"
 
 export default defineComponent({
   setup() {
-    return { sysTables: sysTables(), acct: boidAccount(), ipfsUrl }
+    return { sysTables: sysTables(), acct: boidAccount(), ipfsUrl, currentRound, roundStartTime }
   },
   data() {
     return {
@@ -227,26 +230,25 @@ export default defineComponent({
   },
   async mounted() {
     await this.fetchTargetMeta()
-    if (this.targetAcct) this.loadAccount(this.targetAcct)
-    if (this.targetAcct) this.loadHistoryFeed(1)
+    if (this.targetAcct) { this.loadAccount(this.targetAcct) }
+    if (this.targetAcct) { this.loadHistoryFeed(1) }
   },
   methods: {
     async fetchTargetMeta() {
       const acct = this.acct.loggedIn
-      if (!acct) return
+      if (!acct) { return }
       const metaRow = sysTables().acctmeta[acct]
-      if (!metaRow || !metaRow.meta) return
+      if (!metaRow || !metaRow.meta) { return }
       const meta = await bytesToJson<Record<string, any>>(metaRow.meta)
       console.log(meta)
       this.targetMetaValue = meta
     },
-
     async loadHistoryFeed(page:number) {
-      if (!this.targetAcct) return
+      if (!this.targetAcct) { return }
       this.historyFeed = await accountFeed(this.targetAcct, page)
     },
     async loadAccount(account:NameType | null) {
-      if (!account) return
+      if (!account) { return }
       this.sysTables.loadAccount(account)
       this.sysTables.loadSponsor(account)
       this.sysTables.loadAcctMeta(account)
@@ -261,17 +263,17 @@ export default defineComponent({
         })
     },
     async addOwner() {
-      if (!this.targetRow) return
-      let newOwner:string|null = null
+      if (!this.targetRow) { return }
+      let newOwner:string | null = null
       if (this.targetRow.owners.length > 0) {
         let loggedIn = linkAccount().loggedIn.account
         if (!loggedIn) {
           await linkAccount().login()
           const account = linkAccount().loggedIn.account
-          if (!account) return
+          if (!account) { return }
           newOwner = account
         }
-        if (!newOwner) return
+        if (!newOwner) { return }
       } else {
         Dialog.create({
           prompt: {
@@ -279,7 +281,6 @@ export default defineComponent({
           },
           title: "Add owner",
           message: "Enter the chain account name to add to this boid account as an owner"
-
         }).onOk(async(data) => {
           console.log(data)
           console.log("new owner: ", data)
@@ -288,7 +289,6 @@ export default defineComponent({
           await this.loadAccount(newOwner)
         })
       }
-
       if (this.targetRow.owners.length == 0) {
         // await sendAuthActions([sysActions.addOwner(loggedIn)])
         // await sleep(1000)
@@ -307,11 +307,11 @@ export default defineComponent({
       Dialog.create({
         component: AddKey
       }).onOk(async() => {
-        if (this.targetAcct) await this.sysTables.loadAccount(this.targetAcct)
+        if (this.targetAcct) { await this.sysTables.loadAccount(this.targetAcct) }
       })
     },
     async removeSponsor() {
-      if (!this.acct.loggedIn) return
+      if (!this.acct.loggedIn) { return }
       const result = await sendAuthActions([sysActions.rmSponsor()])
       console.log(result)
       // const result = await doActions([sysActions.rmSponsor()])
@@ -336,10 +336,9 @@ export default defineComponent({
       }
     }
   },
-
   computed: {
     meta():ParsedAccountMeta {
-      if (!this.targetMetaValue) return new ParsedAccountMeta()
+      if (!this.targetMetaValue) { return new ParsedAccountMeta() }
       return parseAccountMeta(this.targetMetaValue as AccountMeta)
     },
     targetMeta():Record<string, any> | null {
@@ -348,24 +347,22 @@ export default defineComponent({
     ownAcct():boolean {
       return this.acct.loggedIn == this.targetAcct
     },
-    targetAcct():string|null {
+    targetAcct():string | null {
       const acct = this.$route.params.name
-      if (typeof acct == "string") return acct
-      else return null
+      if (typeof acct == "string") { return acct } else { return null }
     },
-    targetRow():Account | null |undefined {
-      if (!this.targetAcct) return null
-      else return this.sysTables.accounts[this.targetAcct]
+    targetRow():Account | null | undefined {
+      if (!this.targetAcct) { return null } else { return this.sysTables.accounts[this.targetAcct] }
     },
-    targetSponsor():Sponsor | null |undefined {
-      if (!this.targetAcct) return null
-      else return this.sysTables.sponsors[this.targetAcct]
+    targetSponsor():Sponsor | null | undefined {
+      if (!this.targetAcct) { return null } else { return this.sysTables.sponsors[this.targetAcct] }
     }
   },
   watch: {
     async "$route.params.name"() {
-      if (this.targetAcct) this.loadAccount(this.targetAcct)
+      if (this.targetAcct) { this.loadAccount(this.targetAcct) }
     }
-  }
+  },
+  components: { AccountBooster }
 })
 </script>
