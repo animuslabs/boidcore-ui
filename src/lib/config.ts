@@ -4,11 +4,11 @@ import { reloadHistory, reloadTrpc } from "src/lib/trpc"
 export const activeChain = "telos"
 type Configs = "telos" | "telosTest"
 export const defaultRelayer:Record<Configs, string> = {
-  telos: "https://relayer.boid.com",
+  telos: "https://relay.boid.animus.is",
   telosTest: "https://testnet.relayer.boid.com"
 }
 export const defaultHistory:Record<Configs, string> = {
-  telos: "https://history.boid.com",
+  telos: "https://history.boid.animus.is",
   telosTest: "https://testnet.history.boid.com"
 }
 
