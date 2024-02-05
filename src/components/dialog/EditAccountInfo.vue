@@ -13,12 +13,12 @@ q-dialog(ref="dialog" @hide="onDialogHide")
       div.q-mt-lg
         h5 About me
           q-input(v-model="infoText" inputStyle="font-size:20px;" type="textarea")
-      div.q-mt-lg
-        h5 EOS Account
-          q-input(v-model="eosAccount" inputStyle="font-size:20px;")
-      div.q-mt-lg
-        h5 Telos Account
-          q-input(v-model="telosAccount" inputStyle="font-size:20px;")
+      //- div.q-mt-lg
+      //-   h5 Telegram ID
+      //-     q-input(v-model="tgHandle" inputStyle="font-size:20px;")
+      //- div.q-mt-lg
+      //-   h5 Telos Account
+      //-     q-input(v-model="telosAccount" inputStyle="font-size:20px;")
 
     q-card-actions(align="right")
       q-btn(color="grey" label="Cancel" @click="onCancelClick" flat)
@@ -47,6 +47,7 @@ export default defineComponent({
     this.infoText = parsed.text.info
     this.eosAccount = parsed.text.eosAccount
     this.telosAccount = parsed.text.telosAccount
+    this.tgHandle = parsed.text.tgHandle
     this.fetchAndParseMeta()
   },
   data: function() {
@@ -56,6 +57,7 @@ export default defineComponent({
       infoText: "",
       eosAccount: "",
       telosAccount: "",
+      tgHandle: "",
       targetMetaValue: null as null | Record<string, any>
     }
   },

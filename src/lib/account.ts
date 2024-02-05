@@ -6,11 +6,13 @@ export class ParsedAccountMeta {
     info:string
     eosAccount:string
     telosAccount:string
+    tgHandle:string
   } = {
       tagline: "",
       info: "",
       eosAccount: "",
-      telosAccount: ""
+      telosAccount: "",
+      tgHandle: ""
     }
 
   media:{
