@@ -31,12 +31,12 @@ q-page(padding)
             .col-auto
               h2.no-margin {{targetAcct}}
               p.q-ma-sm {{meta.text.info}}
-              .row.items-center
-                p.text-weight-light.q-ma-sm EOS Account:
-                p {{meta.text.eosAccount}}
-              .row.items-center
-                p.text-weight-light.q-ma-sm Telos Account:
-                p {{meta.text.telosAccount}}
+              //- .row.items-center
+              //-   p.text-weight-light.q-ma-sm EOS Account:
+              //-   p {{meta.text.eosAccount}}
+              //- .row.items-center
+              //-   p.text-weight-light.q-ma-sm Telos Account:
+              //-   p {{meta.text.telosAccount}}
         q-separator(spaced="lg")
         .centered(v-if="targetRow")
           .row.q-gutter-md
