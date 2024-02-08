@@ -2,7 +2,7 @@
 q-page(padding)
   .div(v-if="!targetTeam").q-mt-lg
     .centered
-      q-card.q-pa-md(style="width:435px; max-width:90vw;")
+      q-card.q-pa-md(style="width:635px; max-width:90vw;")
         .centered
           h3 Boid Teams
           TeamsList(:teams="teamsView")

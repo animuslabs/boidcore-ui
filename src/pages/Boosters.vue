@@ -2,7 +2,7 @@
 q-page(padding)
   .div(v-if="!targetMod").q-mt-lg
     .centered
-      q-card.q-pa-md(style="width:535px; max-width:90vw;")
+      q-card.q-pa-md(style="width:635px; max-width:90vw;")
         .centered
           h3 Boosters
         q-markup-table.q-mt-md( flat).full-width
@@ -27,7 +27,7 @@ q-page(padding)
                 h5 {{booster.aggregate_pwr_capacity}}
   div(v-else).q-pt-lg
     .centered
-      q-card.q-pa-md(style="width:535px; max-width:90vw;")
+      q-card.q-pa-md(style="width:935px; max-width:90vw;")
         .centered.q-pb-md
           h3 Power Mod: {{targetMod.booster_id}}
         .centered.q-mb-md.q-gutter-sm
