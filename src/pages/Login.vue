@@ -17,7 +17,7 @@ div.q-ma-md
         q-input( @focus="clearError()" v-model="boidIdPw" inputStyle="font-size:25px; text-align:center" type="password" )
         .q-mt-md
         .row
-          //- q-checkbox(v-model="savePw" label="Remember Password")
+          q-checkbox(v-model="savePw" label="Remember Account")
           .col-grow
           q-btn(label="login" color="primary" :flat="false" :disable="disableLogin" type="submit")
         .centered
@@ -87,7 +87,7 @@ export default defineComponent({
       mainError: "",
       emailInput: "",
       boidIdPw: "",
-      savePw: false,
+      savePw: true,
       boidIdErrorMsg: "",
       advanced: false,
       targetRow: null as Account | null
