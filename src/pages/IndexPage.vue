@@ -92,14 +92,15 @@ import { defineComponent } from "vue"
 import { currentRound, currentRoundProgress, getTimeData } from "src/lib/util"
 import { sysTables } from "src/stores/sysTables"
 import timethat from "timethat"
-
+let interval:null|ReturnType<typeof setInterval> = null
 export default defineComponent({
   name: "IndexPage",
   components: { ExampleComponent },
   data() {
     return {
       sys: sysTables(),
-      currentRound: currentRound()
+      currentRound: currentRound(),
+      timeUntilNextRound: "loading..."
     }
   },
   async mounted() {
@@ -107,9 +108,16 @@ export default defineComponent({
     await this.sys.loadGlobal()
     await this.sys.loadAccounts()
     this.currentRound = currentRound()
+    this.timeUntilNextRound = this.calcTimeUntilNextRound()
+    interval = setInterval(() => {
+      this.timeUntilNextRound = this.calcTimeUntilNextRound()
+    }, 1000 * 30)
   },
-  computed: {
-    timeUntilNextRound():string {
+  unmounted() {
+    if (interval) clearInterval(interval)
+  },
+  methods: {
+    calcTimeUntilNextRound():string {
       const progress = currentRoundProgress() % 1
       const timeElapsed = getTimeData().roundLengthMs * progress
       const timeRemaining = getTimeData().roundLengthMs - timeElapsed
