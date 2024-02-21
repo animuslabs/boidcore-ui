@@ -1,7 +1,28 @@
 <template lang="pug">
 q-page(padding)
-  //- .centered
-  //-   h2 Boid Core Hub
+  .centered
+    h2 Boid Status
+  .centered.q-gutter-md
+    q-card.q-pa-md
+      .centered
+        h3.text-weight-light {{ currentRound }}
+      .centered
+        p.text-weight-thin Current Round
+    q-card.q-pa-md
+      .centered
+        h5.text-weight-light {{ timeUntilNextRound }}
+      .centered
+        p.text-weight-thin Next Round Starts
+    q-card.q-pa-md
+      .centered
+        h5.text-weight-light {{ sys.global.total_power.toString() }}
+      .centered
+        p.text-weight-thin Total Boid Power
+    q-card.q-pa-md
+      .centered
+        h5.text-weight-light {{ Object.entries(sys.accounts).length }}
+      .centered
+        p.text-weight-thin Total Members
   .centered
   .centered.q-mt-md
     q-card(style="width:1200px; max-width:90vw").q-pa-md
@@ -68,37 +89,36 @@ q-page(padding)
 import { Todo, Meta } from "components/models"
 import ExampleComponent from "components/ExampleComponent.vue"
 import { defineComponent } from "vue"
+import { currentRound, currentRoundProgress, getTimeData } from "src/lib/util"
+import { sysTables } from "src/stores/sysTables"
+import timethat from "timethat"
 
 export default defineComponent({
   name: "IndexPage",
   components: { ExampleComponent },
   data() {
-    const todos:Todo[] = [
-      {
-        id: 1,
-        content: "ct1"
-      },
-      {
-        id: 2,
-        content: "ct2"
-      },
-      {
-        id: 3,
-        content: "ct3"
-      },
-      {
-        id: 4,
-        content: "ct4"
-      },
-      {
-        id: 5,
-        content: "ct5"
-      }
-    ]
-    const meta:Meta = {
-      totalCount: 1200
+    return {
+      sys: sysTables(),
+      currentRound: currentRound()
     }
-    return { todos, meta }
+  },
+  async mounted() {
+    await this.sys.loadConfig()
+    await this.sys.loadGlobal()
+    await this.sys.loadAccounts()
+    this.currentRound = currentRound()
+  },
+  computed: {
+    timeUntilNextRound():string {
+      const progress = currentRoundProgress() % 1
+      const timeElapsed = getTimeData().roundLengthMs * progress
+      const timeRemaining = getTimeData().roundLengthMs - timeElapsed
+      const endDate = new Date(Date.now() + timeRemaining)
+
+      const text:string = timethat.calc(new Date(), endDate)
+      const trimmed = text.split(",").splice(0, 2)
+      return trimmed.join()
+    }
   }
 })
 </script>

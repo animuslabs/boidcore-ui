@@ -17,7 +17,7 @@ export function roundStartTime(round:number|UInt16) {
   const { roundLengthMs, roundsStartedMs } = getTimeData()
   return new Date(roundsStartedMs + ((parseInt(round.toString()) * roundLengthMs)))
 }
-function getTimeData() {
+export function getTimeData() {
   const sys = sysTables()
   return {
     roundLengthMs: (sys.config?.time.round_length_sec?.toNumber() || 46800) * 1000,
@@ -34,6 +34,10 @@ export function roundsToDays(numRounds:UInt16Type) {
 export function currentRound():number {
   const { roundLengthMs, roundsStartedMs } = getTimeData()
   return Math.floor((Date.now() - roundsStartedMs) / roundLengthMs)
+}
+export function currentRoundProgress():number {
+  const { roundLengthMs, roundsStartedMs } = getTimeData()
+  return (Date.now() - roundsStartedMs) / roundLengthMs
 }
 
 export function validName(name:string) {
