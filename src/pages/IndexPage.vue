@@ -111,6 +111,9 @@ export default defineComponent({
     this.timeUntilNextRound = this.calcTimeUntilNextRound()
     interval = setInterval(() => {
       this.timeUntilNextRound = this.calcTimeUntilNextRound()
+      this.currentRound = currentRound()
+      this.sys.loadGlobal()
+      this.sys.loadAccounts()
     }, 1000 * 30)
   },
   unmounted() {
