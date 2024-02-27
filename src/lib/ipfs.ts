@@ -4,7 +4,7 @@ import { sha256 } from "multiformats/hashes/sha2"
 import { markRaw, reactive, ref, shallowReactive } from "vue"
 import ax from "axios"
 import { LocalStorage } from "quasar"
-import config from "src/lib/config"
+import config, { getActiveIpfs, setIpfs } from "src/lib/config"
 import { Bytes } from "anchor-link"
 // import { IPFS, create } from "ipfs-core"
 const IPFS = (window as any).Ipfs
@@ -36,15 +36,10 @@ export const ipfsCache:Record<string, any> = shallowReactive({})
 export const ipfsGateway = ref(getIpfsGateway())
 
 export function getIpfsGateway():string {
-  // return "https://ipfs.eospowerup.io"
-  // return "http://localhost:8080"
-  const url = LocalStorage.getItem("ipfsurl") || "https://ipfs.boid.com"
-  if (!url || typeof url != "string") LocalStorage.remove("ipfsurl")
-  return url as string
+  return getActiveIpfs()
 }
 export function setIpfsGateway(url:string) {
-  LocalStorage.set("ipfsurl", url)
-  ipfsGateway.value = url
+  return setIpfs(url)
 }
 
 export async function getIpfs(cid:CID|string):Promise<any | null> {

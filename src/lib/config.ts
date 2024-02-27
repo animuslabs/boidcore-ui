@@ -5,11 +5,15 @@ export const activeChain = "telos"
 type Configs = "telos" | "telosTest"
 export const defaultRelayer:Record<Configs, string> = {
   telos: "https://relay.boid.animus.is",
-  telosTest: "https://testnet.relayer.boid.com"
+  telosTest: "https://testnet.relayer.boid.io"
 }
 export const defaultHistory:Record<Configs, string> = {
   telos: "https://history.boid.animus.is",
-  telosTest: "https://testnet.history.boid.com"
+  telosTest: "https://testnet.history.boid.io"
+}
+export const defaultIpfs:Record<Configs, string> = {
+  telos: "https://ipfs.pintastic.link",
+  telosTest: "https://ipfs.pintastic.link"
 }
 
 export type Config = {
@@ -47,7 +51,7 @@ const configs:Record<Configs, Config> = {
     relayer: getActiveRelayer("telosTest"),
     relayers: ["https://testnet.relayer.boid.com"],
     history: ["https://testnet.history.boid.com"],
-    chainRPCs: ["https://testnet.telos.net"],
+    chainRPCs: ["https://testnet.telos.net", "https://telos-testnet.eosphere.io", "https://test.telos.eosusa.io"],
     ipfs: ["https://ipfs.boid.com", "https://ipfs.pintastic.link", "https://ipfs.io"]
   },
   telos: {
@@ -63,9 +67,9 @@ const configs:Record<Configs, Config> = {
     tokenSymbol: "4,BOID",
     explorer: "https://explorer.telos.net",
     relayer: getActiveRelayer("telos"),
-    relayers: ["https://relayer.boid.com", "https://relay.boid.animus.is"],
-    history: ["https://history.boid.com", "https://history.boid.animus.is"],
-    chainRPCs: ["https://mainnet.telos.net", "https://telos.api.animus.is"],
+    relayers: ["https://relayer.boid.io", "https://relay.boid.animus.is"],
+    history: ["https://history.boid.io", "https://history.boid.animus.is"],
+    chainRPCs: ["https://mainnet.telos.net", "https://telos.api.animus.is", "https://telos.caleos.io", "http://telos.greymass.com", "http://telos.eosusa.io", "https://telos.api.eosnation.io"],
     ipfs: ["https://ipfs.boid.com", "https://ipfs.pintastic.link", "https://ipfs.io"]
   }
 }
@@ -89,4 +93,13 @@ export function getActiveRelayer(chainName:Configs = activeChain) {
   const saved = LocalStorage.getItem("relayer-" + chainName)
   if (!saved) return defaultRelayer[chainName]
   else return saved as string
+}
+export function getActiveIpfs(chainName:Configs = activeChain) {
+  const saved = LocalStorage.getItem("ipfs-" + chainName)
+  if (!saved) return defaultIpfs[chainName]
+  else return saved as string
+}
+export function setIpfs(ipfsUrl:string) {
+  LocalStorage.set("ipfs-" + activeChain, ipfsUrl)
+  reloadHistory()
 }
