@@ -5,7 +5,7 @@ q-page(padding)
   .centered.q-gutter-md
     q-card.q-pa-md
       .centered
-        h3.text-weight-light {{ currentRound }}
+        h5.text-weight-light {{ currentRound }}
       .centered
         p.text-weight-thin Current Round
     q-card.q-pa-md
@@ -67,12 +67,19 @@ q-page(padding)
             .row.items-center.no-wrap.q-gutter-md
               h2 4
               div.q-pa-lg
+                h4 Join Boinc Protocols
+                p We have a guide for how to join Boinc projects that may perform better for different hardware and enables you to contribute towards different kinds of research. Learn more at #[a(href="https://community.boid.com/t/6-computing-protocols-live/879" target="_blank") Boinc Protocols Guide].
+        .col-auto
+          div.q-pa-md
+            .row.items-center.no-wrap.q-gutter-md
+              h2 5
+              div.q-pa-lg
                 h4 Watch your account power up
                 p Track your progress on the team leaderboard. Your account will receive BOID tokens over time based on your Boid Power. The tokens are automatically staked to your account which increases your BOID token earning rate.
         .col-auto
           div.q-pa-md
             .row.items-center.no-wrap.q-gutter-md
-              h2 5
+              h2 6
               div.q-pa-lg
                 h4 Explore Boid
                 ul
@@ -128,7 +135,7 @@ export default defineComponent({
 
       const text:string = timethat.calc(new Date(), endDate)
       const trimmed = text.split(",").splice(0, 2)
-      return trimmed.join()
+      return trimmed.join().replace("hour", "hr").replace("minute", "min")
     }
   }
 })
