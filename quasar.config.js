@@ -1,6 +1,6 @@
 const { configure } = require("quasar/wrappers")
 
-module.exports = configure(function(/* ctx */) {
+module.exports = configure(function (/* ctx */) {
   return {
     eslint: {
       fix: true,
@@ -25,9 +25,9 @@ module.exports = configure(function(/* ctx */) {
         node: "node18"
       },
       extendViteConf(viteConf, { isClient, isServer }) {
-        viteConf.plugins.push(
-          require("vite-plugin-rewrite-all").default() // fixes a bug with dots in the url during development
-        )
+        // import("vite-plugin-rewrite-all").then(el => {
+        //   viteConf.plugins.push(el)
+        // }) // fixes a bug with dots in the url during development
         // viteConf.logLevel = "warn"
         // viteConf.build = {
         //   target: "es2020"

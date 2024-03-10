@@ -31,14 +31,22 @@ q-page(padding)
             .col-auto
               h2.no-margin {{targetAcct}}
               p.q-ma-sm {{meta.text.info}}
-              //- .row.items-center
-              //-   p.text-weight-light.q-ma-sm EOS Account:
-              //-   p {{meta.text.eosAccount}}
-              //- .row.items-center
-              //-   p.text-weight-light.q-ma-sm Telos Account:
-              //-   p {{meta.text.telosAccount}}
         q-separator(spaced="lg")
-        .centered(v-if="targetRow")
+        .centered.q-gutter-md
+          q-card.q-pa-md
+            .centered
+              h5.text-weight-light {{ targetRow.power.rating }}
+            .centered
+              p.text-weight-thin Boid Power
+          q-card.q-pa-md
+            .centered
+              h5.text-weight-light {{ targetRow.stake.self_staked.toNumber().toLocaleString() }}
+            .centered
+              p.text-weight-thin BOID Stake
+        .centered.q-mb-md.q-mt-lg
+          q-btn(label="show advanced" size="sm" @click="showAdvanced = !showAdvanced" v-if="!showAdvanced")
+          q-btn(label="hide advanced" size="sm" @click="showAdvanced = !showAdvanced" v-else)
+        .centered(v-if="targetRow&& showAdvanced")
           .row.q-gutter-md
             q-card.q-pa-md
               .centered
@@ -225,7 +233,8 @@ export default defineComponent({
       delegatedStakeRounds: 0,
       historyFeed: [] as any[],
       targetMetaValue: null as null | Record<string, any>,
-      newOwnerName: "" as string
+      newOwnerName: "" as string,
+      showAdvanced: false
     }
   },
   async mounted() {

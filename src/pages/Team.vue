@@ -5,10 +5,9 @@ q-page(padding)
       q-card.q-pa-md(style="width:635px; max-width:90vw;")
         .centered
           h3 Boid Teams
-          TeamsList(:teams="teamsView")
+          TeamsList( :teams="teamsView" )
   .centered(v-if="targetTeam")
     TeamCard(:team="targetTeam")
-
 </template>
 
 <script lang="ts">
