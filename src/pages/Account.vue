@@ -179,25 +179,26 @@ q-page(padding)
               //-     q-btn(label="update ipfs json" type="submit" color="secondary" outline  ).q-ma-sm
               q-btn(label="invites" type="a" href="/sponsor")
   q-separator(spaced="lg")
-  .centered.q-mb-sm
-    h4 Activity
-    q-btn(icon="refresh" @click="loadHistoryFeed(1)")
-  .centered
-  q-markup-table(flat)
-    thead
-      th Time
-      th Action
-      th Parameters
-    tbody
-      tr(v-for="(action,index) of historyFeed").non-selectable
-        td.text-center {{action.timeStamp}}
-        td.text-center {{ action.actName }}
-        td
-          pre {{action}}
-      //- td.text-center {{index+1}}
-      //- td.text-center {{member.boid_id}}
-      //- td.text-center {{member.stake.self_staked.toNumber().toLocaleString()}} BOID
-      //- td.text-center {{member.power.rating}}
+  div(v-if="showAdvanced")
+    .centered.q-mb-sm
+      h4 Activity
+      q-btn(icon="refresh" @click="loadHistoryFeed(1)")
+    .centered
+    q-markup-table(flat)
+      thead
+        th Time
+        th Action
+        th Parameters
+      tbody
+        tr(v-for="(action,index) of historyFeed").non-selectable
+          td.text-center {{action.timeStamp}}
+          td.text-center {{ action.actName }}
+          td
+            pre {{action}}
+        //- td.text-center {{index+1}}
+        //- td.text-center {{member.boid_id}}
+        //- td.text-center {{member.stake.self_staked.toNumber().toLocaleString()}} BOID
+        //- td.text-center {{member.power.rating}}
 
 </template>
 
