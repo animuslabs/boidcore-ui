@@ -92,9 +92,9 @@ q-page
                   .row
                     div redeemable
                   .row
-                    div.no-margin {{roundStartTime(unstaking.redeemable_after_round).toLocaleDateString() }}
+                    div.no-margin {{roundStartTime(unstaking.redeemable_after_round.toNumber() + 1).toLocaleDateString() }}
                   .row
-                    div.no-margin {{roundStartTime(unstaking.redeemable_after_round).toLocaleTimeString() }}
+                    div.no-margin {{roundStartTime(unstaking.redeemable_after_round.toNumber() + 1).toLocaleTimeString() }}
                 .col-auto
                   q-btn(icon="close" color="red" flat label="cancel" :disable="unstakeRedeemable" @click="cancelUnstake()")
                   q-separator
