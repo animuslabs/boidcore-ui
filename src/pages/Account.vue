@@ -8,7 +8,7 @@ q-page(padding)
         p Account Search
   q-separator(spaced)
   .centered
-    div(style="width:700px;max-width:90vw")
+    div(style="width:1700px;max-width:90vw")
       div(v-if="!targetAcct")
         .centered(v-if="acct.loggedIn")
           q-btn(label="view my account" @click="$router.push({name:'account',params:{name:acct.loggedIn}})" icon-right="search")
@@ -43,6 +43,13 @@ q-page(padding)
               h5.text-weight-light {{ targetRow.stake.self_staked.toNumber().toLocaleString() }}
             .centered
               p.text-weight-thin BOID Stake
+          q-card.q-pa-md
+            .centered
+              h5.text-weight-light {{ targetRow.team.team_cumulative_contribution }}
+            .centered
+              p.text-weight-thin Team Contribution
+        .centered
+          account-booster(v-for="booster of targetRow.power.boosters" :booster="booster")
         .centered.q-mb-md.q-mt-lg
           q-btn(label="show advanced" size="sm" @click="showAdvanced = !showAdvanced" v-if="!showAdvanced")
           q-btn(label="hide advanced" size="sm" @click="showAdvanced = !showAdvanced" v-else)
