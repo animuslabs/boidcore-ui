@@ -24,10 +24,11 @@ module.exports = configure(function (/* ctx */) {
         browser: ["es2022", "edge90", "firefox90", "chrome90", "safari15"],
         node: "node18"
       },
-      extendViteConf(viteConf, { isClient, isServer }) {
-        // import("vite-plugin-rewrite-all").then(el => {
-        //   viteConf.plugins.push(el)
-        // }) // fixes a bug with dots in the url during development
+      async extendViteConf(viteConf, { isClient, isServer }) {
+        const plugin = await import("vite-plugin-rewrite-all")
+
+        // fixes a bug with dots in the url during development
+        viteConf.plugins.push(plugin.default)
         // viteConf.logLevel = "warn"
         // viteConf.build = {
         //   target: "es2020"

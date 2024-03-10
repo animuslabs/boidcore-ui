@@ -252,8 +252,8 @@ export default defineComponent({
   },
   methods: {
     async fetchTargetMeta() {
-      const acct = this.acct.loggedIn
-      if (!acct) { return }
+      const acct = this.targetAcct
+      if (!acct) return
       const metaRow = sysTables().acctmeta[acct]
       if (!metaRow || !metaRow.meta) { return }
       const meta = await bytesToJson<Record<string, any>>(metaRow.meta)
@@ -269,6 +269,7 @@ export default defineComponent({
       this.sysTables.loadAccount(account)
       this.sysTables.loadSponsor(account)
       this.sysTables.loadAcctMeta(account)
+      await this.fetchTargetMeta()
     },
     async updateAccountInfo() {
       Dialog.create({ component: EditAccountInfo })
@@ -376,6 +377,12 @@ export default defineComponent({
     }
   },
   watch: {
+    targetAcct: {
+      handler() {
+        console.log("target acct changed: ", this.targetAcct)
+        if (this.targetAcct) { this.loadAccount(this.targetAcct) }
+      }
+    },
     async "$route.params.name"() {
       if (this.targetAcct) { this.loadAccount(this.targetAcct) }
     }
