@@ -12,7 +12,7 @@ export async function accountFeed(boid_id:NameType, page = 1) {
   start.setMilliseconds(0)
   //@ts-ignore
   const result = await history.actions.query({
-    actions: ["account.edit", "account.free", "auth.addkey", "auth.rmkey", "internalxfer", "invite.add", "invite.claim", "offer.claim", "owner.add", "owner.rm", "pwrmod.add", "pwrmod.rm", "stake", "stake.deleg", "team.change", "unstake.init", "unstake.stop", "unstake.end", "withdraw"],
+    actions: ["account.edit", "account.free", "auth.addkey", "auth.rmkey", "internalxfer", "invite.add", "invite.claim", "offer.claim", "owner.add", "owner.rm", "booster.add", "booster.rm", "stake", "stake.deleg", "team.change", "unstake.init", "unstake.stop", "unstake.end", "withdraw"],
     // actions: ["account.edit"],
     skip: page * 20,
     filter: { boid_id: boid_id.toString() },
