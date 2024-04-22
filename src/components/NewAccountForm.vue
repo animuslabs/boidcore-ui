@@ -50,7 +50,7 @@ q-card.q-ma-md.q-pa-md
               q-btn( @click="payWithBoidAccount()" :disable="!acct.loggedIn" color="primary" :label="'Pay With Boid Account '+acct.loggedIn" padding="15px").full-width
               q-btn(label="Boid login" @click="showBoidLogin()").full-width
             .col
-              q-btn( @click="payWithAnchorAccount()" :disable="!link.loggedIn.account" color="primary" :label="'Pay With Anchor Account '+link.loggedIn.account" padding="15px" ).full-width
+              q-btn( @click="payWithAnchorAccount()" :disable="!link.account" color="primary" :label="'Pay With Anchor Account '+link.account" padding="15px" ).full-width
               q-btn(label="anchor login" @click="link.login()").full-width
 
   div(v-if="gold")
@@ -101,15 +101,15 @@ export default {
       return keyFromString(this.fullBoidId.toLowerCase().trim() + this.emailInput.toLowerCase().trim() + this.boidIdPw.trim())
     },
     async payWithAnchorAccount() {
-      const auth = this.link.loggedIn.auth
+      const auth = this.link.auth
       const newBoidId = this.fullBoidId.toLowerCase().trim()
       if (!auth) return alert("auth error, not logged in")
       const key = this.genKey()
       const action = Transfer.from({
-        from: this.link.loggedIn.account,
+        from: this.link.account,
         to: config.contracts.system,
         quantity: `${this.goldAcctCost.toFixed(4)} BOID`,
-        memo: "createaccount boid_id=" + newBoidId + "  owner=" + this.link.loggedIn.account
+        memo: "createaccount boid_id=" + newBoidId + "  owner=" + this.link.account
       })
       const result = await doActions([createAct("transfer", action, config.contracts.token, [auth as any]), sysActions.addKey(key.toPublic(), newBoidId, [auth])])
       if (result) Dialog.create({ message: "account created: " + this.fullBoidId }).onDismiss(() => this.$router.push({ name: "login" }))

@@ -216,13 +216,14 @@ export default defineComponent({
   },
   methods: {
     async xfer() {
-      if (!this.linkAccount.loggedIn) await this.linkAccount.login()
+      if (!this.linkAccount.getLoggedIn) await this.linkAccount.login()
       const result = await doActions([sysActions.internalxfer(this.xferQuantity, this.xferTo)])
       console.log(result)
       this.loadWallet()
     },
     async withdraw() {
-      if (!this.linkAccount.loggedIn) await this.linkAccount.login()
+      if (!this.linkAccount.getLoggedIn) await this.linkAccount.login()
+      console.log("withdraw")
       const result = await doActions([sysActions.withdraw(this.withdrawQuantity, this.withdrawTo)])
       console.log(result)
       this.loadWallet()

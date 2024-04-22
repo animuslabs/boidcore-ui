@@ -1,38 +1,43 @@
 import { defineStore } from "pinia"
-import { LinkSession, NameType, PermissionLevelType } from "anchor-link"
-import { reactive, shallowReactive } from "vue"
+import { reactive, type UnwrapNestedRefs, type UnwrapRef } from "vue"
 import { link } from "src/lib/linkManager"
+import { LinkSession, PermissionLevelType, NameType } from "anchor-link"
 
-class LoggedInState {
-  account:null | string = null
-  auth:null | PermissionLevelType = null
-  chainId:null | string = null
-  wallet:null | NameType = null
-}
+const state = reactive({
+  account: null as null | string,
+  auth: null as null | PermissionLevelType,
+  chainId: null as null | string,
+  wallet: null as null | NameType
+})
 
 export const linkAccount = defineStore({
   id: "linkAccount",
-  state: () => (reactive({ loggedIn: new LoggedInState() })),
+  state: ():UnwrapNestedRefs<typeof state> => state,
   getters: {
     getLoggedIn: (state) => {
-      const t = state.loggedIn.account != null
-      return t ? state.loggedIn : false
+      return state.account != null ? state : null
     }
   },
   actions: {
     setUser(session:LinkSession | false) {
-      console.log("set link user", session)
-      this.loggedIn.account = session ? session.auth.actor.toString() : null
-      this.loggedIn.auth = session ? session.auth : null
-      this.loggedIn.chainId = session ? session.chainId.toString() : null
-      this.loggedIn.wallet = session ? session.metadata.name : null
-      console.log(this.loggedIn)
+      this.account = session ? session.auth.actor.toString() : null
+      this.auth = session ? session.auth : null
+      this.chainId = session ? session.chainId.toString() : null
+      this.wallet = session ? session.metadata.name : null
     },
     async login() {
-      const result = await link.login()
+      try {
+        await link.login()
+      } catch (error) {
+        console.error("Login failed:", error)
+      }
     },
     async logout() {
-      const result = await link.logout()
+      try {
+        await link.logout()
+      } catch (error) {
+        console.error("Logout failed:", error)
+      }
     }
   }
 })

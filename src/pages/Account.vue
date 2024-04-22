@@ -34,21 +34,21 @@ q-page(padding)
         q-separator(spaced="lg")
         .centered.q-gutter-md
           q-card.q-pa-md
-            .centered
+            .centered(v-if="targetRow")
               h5.text-weight-light {{ targetRow.power.rating }}
             .centered
               p.text-weight-thin Boid Power
           q-card.q-pa-md
-            .centered
+            .centered(v-if="targetRow")
               h5.text-weight-light {{ targetRow.stake.self_staked.toNumber().toLocaleString() }}
             .centered
               p.text-weight-thin BOID Stake
           q-card.q-pa-md
-            .centered
+            .centered(v-if="targetRow")
               h5.text-weight-light {{ targetRow.team.team_cumulative_contribution }}
             .centered
               p.text-weight-thin Team Contribution
-        .centered
+        .centered(v-if="targetRow")
           account-booster(v-for="booster of targetRow.power.boosters" :booster="booster")
         .centered.q-mb-md.q-mt-lg
           q-btn(label="show advanced" size="sm" @click="showAdvanced = !showAdvanced" v-if="!showAdvanced")
@@ -284,10 +284,10 @@ export default defineComponent({
       if (!this.targetRow) { return }
       let newOwner:string | null = null
       if (this.targetRow.owners.length > 0) {
-        let loggedIn = linkAccount().loggedIn.account
+        let loggedIn = linkAccount().account
         if (!loggedIn) {
           await linkAccount().login()
-          const account = linkAccount().loggedIn.account
+          const account = linkAccount().account
           if (!account) { return }
           newOwner = account
         }
