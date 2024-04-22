@@ -27,7 +27,9 @@ q-page(padding)
           //- p {{meta}}
           .centered.items-center.q-gutter-md
             .col-auto
+            .image-container(style="position: relative; display: inline-block;")
               q-img(:src="ipfsUrl(meta.media.profile)" width="200px" )
+              q-icon(name="mdi-cards" class="cursor-pointer" style="position: absolute; top: 0; right: 0; font-size: 30px;" color="primary" @click="navigateToUrl")
             .col-auto
               h2.no-margin {{targetAcct}}
               p.q-ma-sm {{meta.text.info}}
@@ -242,7 +244,8 @@ export default defineComponent({
       historyFeed: [] as any[],
       targetMetaValue: null as null | Record<string, any>,
       newOwnerName: "" as string,
-      showAdvanced: false
+      showAdvanced: false,
+      nftBoidIDurl: "https://nft.boid.com/boidId-inventory/"
     }
   },
   async mounted() {
@@ -352,6 +355,11 @@ export default defineComponent({
         setTimeout(() => this.searchError = false, 500)
         setTimeout(() => this.acctSearchInput = "", 500)
       }
+    },
+    async navigateToUrl() {
+      if (!this.targetAcct) { return }
+      const url = this.nftBoidIDurl + this.targetAcct
+      window.open(url, "_blank")
     }
   },
   computed: {

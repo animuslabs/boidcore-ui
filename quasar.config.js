@@ -1,6 +1,6 @@
 const { configure } = require("quasar/wrappers")
 
-module.exports = configure(function (/* ctx */) {
+module.exports = configure(function(/* ctx */) {
   return {
     eslint: {
       fix: true,
@@ -17,7 +17,8 @@ module.exports = configure(function (/* ctx */) {
     extras: [
       "roboto-font",
       "material-icons",
-      "fontawesome-v6"
+      "fontawesome-v6",
+      "mdi-v7"
     ],
     build: {
       target: {
