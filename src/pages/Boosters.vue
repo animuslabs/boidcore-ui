@@ -2,10 +2,10 @@
 q-page(padding)
   .div(v-if="!targetMod").q-mt-lg
     .centered
-      q-card.q-pa-md(style="width:635px; max-width:90vw;")
+      q-card.q-pa-md(style="width:640px; max-width:90vw;")
         .centered
           h3 Boosters
-        q-markup-table.q-mt-md( flat).full-width
+        q-markup-table.q-mt-md( flat dense ).full-width
           thead
             tr
               th Booster ID
@@ -16,15 +16,15 @@ q-page(padding)
           tbody
             tr(v-for="booster of boosters" :key="booster.booster_id.value" @click="$router.push({name:'booster',params:{id:booster.booster_id.toString()}})" ).cursor-pointer.non-selectable
               td.text-center
-                h5 {{booster.booster_id}}
+                h5.text-subtitle2 {{booster.booster_id}}
               td.text-center
-                h5 {{booster.pwr_multiplier}}
+                h5.text-subtitle2 {{booster.pwr_multiplier}}
               td.text-center
-                h5 {{booster.pwr_add_per_round}}
+                h5.text-subtitle2 {{booster.pwr_add_per_round}}
               td.text-center
-                h5 {{booster.expire_after_elapsed_rounds}}
+                h5.text-subtitle2 {{booster.expire_after_elapsed_rounds}}
               td.text-center
-                h5 {{booster.aggregate_pwr_capacity}}
+                h5.text-subtitle2 {{booster.aggregate_pwr_capacity}}
   div(v-else).q-pt-lg
     .centered
       q-card.q-pa-md(style="width:935px; max-width:90vw;")
@@ -35,22 +35,22 @@ q-page(padding)
             .centered
               h6.no-margin Aggregate Capacity
             .centered
-              h4.no-margin {{targetMod.aggregate_pwr_capacity}}
+              h5.no-margin {{targetMod.aggregate_pwr_capacity}}
           .col-auto
             .centered
               h6.no-margin Expires after
             .centered
-              h4.no-margin {{targetMod.expire_after_elapsed_rounds}} rounds
+              h5.no-margin {{targetMod.expire_after_elapsed_rounds}} rounds
           .col-auto
             .centered
               h6.no-margin Pwr Multiplier
             .centered
-              h4.no-margin {{targetMod.pwr_multiplier.toNumber() /2}} %
+              h5.no-margin {{targetMod.pwr_multiplier.toNumber() /2}} %
           .col-auto
             .centered
               h6.no-margin Power Add (per round)
             .centered
-              h4.no-margin {{targetMod.pwr_add_per_round}}
+              h5.no-margin {{targetMod.pwr_add_per_round}}
         //- div {{targetMod}}
         div.q-mt-lg
           h5 Booster Offers
@@ -68,8 +68,7 @@ import { defineComponent } from "vue"
 import OfferRow from "src/components/OfferRow.vue"
 export default defineComponent({
   components: { OfferRow },
-  setup() {
-  },
+  setup() {},
   data() {
     return {
 
