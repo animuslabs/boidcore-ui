@@ -5,6 +5,7 @@ q-page(padding)
       q-card.q-pa-md(style="max-width:90vw;").full-width
         .centered
           h3 Offers
+        q-toggle(v-model="filterActive" label="Show Active Only" color="primary")
         q-list( padding)
           offer-row(v-for="offer of offers" :offer="offer" :key="offer.offer_id.toNumber()").q-mt-sm.q-mb-sm
         //- q-markup-table(flat).q-mt-md
@@ -39,16 +40,21 @@ q-page(padding)
 import { QPage, QCard } from "quasar"
 import OfferRow from "src/components/OfferRow.vue"
 import { Offer } from "src/lib/types/boid.system"
+import { currentRound } from "src/lib/util"
 import { sysTables } from "src/stores/sysTables"
 import { defineComponent } from "vue"
 
 export default defineComponent({
   data() {
-    return {}
+    return {
+      currentRound: currentRound(),
+      filterActive: true
+    }
   },
   async mounted() {
     if (this.queryOfferId) { await sysTables().loadOffer(this.queryOfferId) } else { await sysTables().loadOffers() }
     sysTables().loadOffers()
+    this.currentRound = currentRound()
   },
   computed: {
     targetOffer():Offer | null {
@@ -61,7 +67,15 @@ export default defineComponent({
       if (typeof booster != "string") { return null } else { return parseInt(booster) }
     },
     offers():Offer[] {
-      return Object.values(sysTables().offers)
+      const allOffers = Object.values(sysTables().offers)
+      if (this.filterActive) {
+        return allOffers.filter(offer => {
+          const expiresRound = offer.limits.available_until_round.toNumber()
+          const quantityRemaining = offer.limits.offer_quantity_remaining.toNumber()
+          return expiresRound >= this.currentRound && quantityRemaining > 0
+        })
+      }
+      return allOffers // If the filter is not active, return all offers
     }
   },
   watch: {
