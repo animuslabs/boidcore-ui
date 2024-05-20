@@ -56,6 +56,7 @@ q-page(padding)
           h5 Booster Offers
           div Claim an offer below to activate this Power Mod
           //- div {{targetOffers}}
+          q-toggle(v-model="filterActive" label="Show Active Only" color="primary")
           q-list
             div(v-for="offer of targetOffers")
               offer-row.q-ma-md(:offer="offer")
@@ -66,12 +67,15 @@ import { Offer, Booster } from "src/lib/types/boid.system"
 import { sysTables } from "src/stores/sysTables"
 import { defineComponent } from "vue"
 import OfferRow from "src/components/OfferRow.vue"
+import { currentRound } from "src/lib/util"
+
 export default defineComponent({
   components: { OfferRow },
   setup() {},
   data() {
     return {
-
+      currentRound: currentRound(),
+      filterActive: true
     }
   },
   async mounted() {
@@ -95,8 +99,17 @@ export default defineComponent({
     targetOffers():Offer[] {
       if (!this.targetMod) return []
       const boosterId = this.targetMod.booster_id.toNumber()
-      return Object.values(sysTables().offers)
-        .filter(el => el.rewards.activate_booster_ids.array.includes(boosterId))
+      const allOffers = Object.values(sysTables().offers)
+      if (this.filterActive) {
+        return allOffers.filter(offer =>
+          offer.rewards.activate_booster_ids.array.includes(boosterId) &&
+        offer.limits.available_until_round.toNumber() >= this.currentRound &&
+        offer.limits.offer_quantity_remaining.toNumber() > 0
+        )
+      }
+      return allOffers.filter(offer =>
+        offer.rewards.activate_booster_ids.array.includes(boosterId)
+      )
     },
     boosters():Booster[] {
       return Object.values(sysTables().boosters)
