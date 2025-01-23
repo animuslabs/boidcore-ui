@@ -2,7 +2,7 @@
   "name": "boid-web",
   "version": "0.0.1",
   "description": "Boid Web App",
-  "productName": "boid-web",
+  "productName": "BoidHub",
   "author": "jdheeter <johndheeter@gmail.com>",
   "private": true,
   "scripts": {
@@ -16,6 +16,8 @@
     "@quasar/extras": "^1.15.9",
     "@tauri-apps/api": "^1.2.0",
     "@trpc/client": "^10.9.0",
+    "@wharfkit/antelope": "^1.0.13",
+    "@wharfkit/contract": "^1.2.0",
     "anchor-link": "^3.5.1",
     "anchor-link-browser-transport": "^3.5.1",
     "axios": "^1.1.2",

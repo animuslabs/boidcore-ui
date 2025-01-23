@@ -57,9 +57,9 @@ q-layout.relative-position
     //- q-separator.absolute-bottom(size="3px" color="amber-12" style="bottom:0px")
   q-footer.bg-grey-10
     q-toolbar(color="black").row.justify-center
-      q-btn(label="𝕏" type="a" href="https://twitter.com/boidcom" padding="sm" style="font-size: 20px;")
+      q-btn(label="𝕏" type="a" href="https://x.com/boidcom" padding="sm" style="font-size: 20px;")
       q-btn(icon="fab fa-telegram" type="a" href="https://t.me/boidcommunity")
-      q-btn(label="blog" type="a" href="https://twitter.com/boidcom")
+      q-btn(label="blog" type="a" href="https://x.com/boidcom")
       q-btn(label="docs" type="a" href="https://docs.boid.com")
       q-btn(label="more" type="a" href="https://linktr.ee/boidcom")
       //- .row.centered.bg-green
@@ -69,7 +69,7 @@ q-layout.relative-position
     router-view
     div(style="height:20px").full-width
       //- //- q-btn.dropdown:textStyle(color="white" text-color="white" bg-color="transparent" icon="keyboard_arrow_up")#goTop.absolute(relative-position)
-      //- q-btn(textStyle color="secondary" label="© 2021" flat dense v-close-popup, paddingless)
+      //- q-btn(textStyle color="secondary" label=" 2021" flat dense v-close-popup, paddingless)
 </template>
 
 <style lang="sass">
@@ -79,7 +79,7 @@ q-layout.relative-position
 </style>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue"
+import { defineComponent } from 'vue'
 import EssentialLink from "components/EssentialLink.vue"
 // import LoginButton from '../components/menus/LoginButton.vue'
 import { linkAccount } from "src/stores/linkAccount"
@@ -101,6 +101,7 @@ const tabs:QTabsProps = {
   stretch: true,
   contentClass: "boid-tabs"
 }
+
 export default defineComponent({
   components: {
   },

@@ -14,7 +14,8 @@ const routes:RouteRecordRaw[] = [
       { path: "/wallet", name: "wallet", component: () => import("pages/Wallet.vue") },
       { path: "/t/:name?", name: "team", component: () => import("pages/Team.vue") },
       { path: "/booster/:id?", name: "booster", component: () => import("pages/Boosters.vue") },
-      { path: "/offer/:id?", name: "offer", component: () => import("pages/Offers.vue") }
+      { path: "/offer/:id?", name: "offer", component: () => import("pages/Offers.vue") },
+      { path: "/games", name: "games", component: () => import("pages/Games.vue") }
     ]
   },
   {
@@ -44,5 +45,6 @@ export const mainNav:QRouteTabProps[] = [
   { icon: "person_add", label: "Join", to: { name: "join" } },
   { icon: "workspaces", label: "Teams", to: { name: "team" } },
   { icon: "fa-solid fa-cloud-bolt", label: "Boosters", to: { name: "booster" } },
-  { icon: "swap_horiz", label: "Offers", to: { name: "offer" } }
+  { icon: "swap_horiz", label: "Offers", to: { name: "offer" } },
+  { icon: "gamepad", label: "Games", to: { name: "games" } }
 ]

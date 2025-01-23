@@ -44,7 +44,7 @@ const configs:Record<Configs, Config> = {
     linkData: {
       chainId: "1eaa0824707c8c16bd25145493bf062aecddfeb56c736f6ba6397f3195f33c9f",
       nodeUrl: "https://testnet.telos.net",
-      appName: "boid-web"
+      appName: "BoidHub"
     },
     tokenSymbol: "4,BOID",
     explorer: "https://explorer-test.telos.net",
@@ -62,7 +62,7 @@ const configs:Record<Configs, Config> = {
     linkData: {
       chainId: "4667b205c6838ef70ff7988f6e8257e8be0e1284a2f59699054a018f743b1d11",
       nodeUrl: "https://mainnet.telos.net",
-      appName: "boid-web"
+      appName: "BoidHub"
     },
     tokenSymbol: "4,BOID",
     explorer: "https://explorer.telos.net",
