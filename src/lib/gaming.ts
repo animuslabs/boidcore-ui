@@ -50,6 +50,22 @@ export const gameRewardsTable = async() => {
   }
 }
 
+export const globalConfigTable = async() => {
+  try {
+    const result = await link.rpc.get_table_rows({
+      code: "scores.boid",
+      scope: "scores.boid",
+      table: "globalconfig",
+      json: true,
+      limit: 1
+    })
+    return result.rows
+  } catch (error) {
+    console.error("Error fetching game records:", error)
+    throw error
+  }
+}
+
 export const processHighScores = (records:any[]):GameScore[] => {
   return records.map(record => ({
     player: record.player,
@@ -81,11 +97,10 @@ export const getHighScores = (scores:GameScore[], gameId:number, cycleName:numbe
     .sort((a, b) => (b.scores[statName] ?? 0) - (a.scores[statName] ?? 0)) // Using nullish coalescing operator
 }
 
-export const getGameRewards = (rewards:RewardRecord[], gameId:number, cycleName:number, statName:string) => {
+export const getGameRewards = (rewards:RewardRecord[], gameId:number, statName:string) => {
   return rewards
     .filter(reward =>
       reward.game_id === gameId &&
-      reward.cycle_number === cycleName &&
       reward.stat_name === statName)
     .sort((a, b) => new Date(b.distribution_time).getTime() - new Date(a.distribution_time).getTime())
 }

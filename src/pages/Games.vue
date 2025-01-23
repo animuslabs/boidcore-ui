@@ -1,36 +1,86 @@
 <template>
+  <!-- Global Config Info -->
+  <div
+    v-if="globalConfig"
+    class="row justify-center items-center q-mb-md"
+  >
+    <q-card
+      class="q-pa-md bg-transparent"
+      flat
+    >
+      <div class="row q-gutter-lg text-center">
+        <div class="text-subtitle1">
+          Current Cycle <b>{{ currentCycle }}</b>
+        </div>
+        <div class="text-subtitle1">
+          Time Remaining <b>{{ timeRemaining }}</b>
+        </div>
+      </div>
+      <q-separator />
+      <div class="q-mt-md text-center">
+        <a
+          href="https://docs.boid.com/boidverse/boidsquadron/Introduction.html"
+          target="_blank"
+          class="text-indigo-10 text-weight-bold"
+          style="text-decoration: none"
+        >Boid Squadron</a> |
+        <a
+          href="https://docs.boid.com/boidverse/boidvoid/Introduction.html"
+          target="_blank"
+          class="text-indigo-10 text-weight-bold"
+          style="text-decoration: none"
+        >Boid Void</a>
+      </div>
+    </q-card>
+  </div>
   <!-- Game and Cycle Selection -->
   <div class="row justify-center items-center q-mb-md">
     <div
-      class="row q-ma-md"
+      class="row q-mb-xs q-gutter-xs"
     >
       <q-select
         v-model="selectedGame"
         :options="availableGames"
-        label="Select Game"
-        style="width: 130px"
+        label="Game"
+        style="width: 160px"
+        color="primary"
+        label-color="primary"
         emit-value
         map-options
+        outlined
       />
       <q-select
         v-model="selectedCycle"
         :options="availableCycles"
-        label="Select Cycle"
-        style="width: 110px"
+        label="Cycle"
+        style="width: 90px"
+        color="primary"
+        label-color="primary"
         emit-value
         map-options
+        outlined
       />
       <q-select
         v-model="selectedStat"
         :options="availableStats"
-        label="Select Stat"
+        label="Stat"
         style="width: 120px"
+        color="primary"
+        label-color="primary"
         emit-value
         map-options
+        outlined
+      />
+      <q-btn
+        color="grey-5"
+        outline
+        icon-right="refresh"
+        @click="refreshData"
+        :loading="loading"
       />
     </div>
   </div>
-  <div class="row justify-center items-center q-gutter-md">
+  <div class="row justify-center items-start q-gutter-sm">
     <q-card
       class="q-pa-md bg-transparent"
       flat
@@ -46,16 +96,17 @@
         :table-style="{ color: '#e2e8f0' }"
         :separator="'cell'"
         style="max-width: 450px"
+        :pagination="{rowsPerPage: 10}"
       >
         <template #top-right>
           <q-btn
-            color="primary"
-            icon-right="refresh"
-            label="Refresh"
-            @click="refreshData"
-            :loading="loading"
-            class="q-px-md"
-          />
+            flat
+            dense
+            icon="info"
+            color="white"
+          >
+            <q-tooltip>Shows top performing players in the current cycle on a chosen stat.</q-tooltip>
+          </q-btn>
         </template>
       </q-table>
     </q-card>
@@ -75,7 +126,19 @@
         :table-style="{ color: '#e2e8f0' }"
         :separator="'cell'"
         style="max-width: 450px"
-      />
+        :pagination="{rowsPerPage: 10}"
+      >
+        <template #top-right>
+          <q-btn
+            flat
+            dense
+            icon="info"
+            color="white"
+          >
+            <q-tooltip>Shows top performing players of all time on a chosen stat.</q-tooltip>
+          </q-btn>
+        </template>
+      </q-table>
     </q-card>
     <q-card
       class="q-pa-md bg-transparent"
@@ -93,14 +156,26 @@
         :table-style="{ color: '#e2e8f0' }"
         :separator="'cell'"
         style="max-width: 550px"
-      />
+        :pagination="{rowsPerPage: 10}"
+      >
+        <template #top-right>
+          <q-btn
+            flat
+            dense
+            icon="info"
+            color="white"
+          >
+            <q-tooltip>Shows rewards given out to players based on the chosen game and stat.</q-tooltip>
+          </q-btn>
+        </template>
+      </q-table>
     </q-card>
   </div>
 </template>
 
 <script setup lang="ts">
-import { gameRecordsTable, gameRewardsTable, processHighScores, processRewardRecords, getHighScores, getAllTimeHighScores, getGameRewards, type GameScore, type RewardRecord } from "src/lib/gaming"
-import { onMounted, ref, computed } from "vue"
+import { gameRecordsTable, gameRewardsTable, globalConfigTable, processHighScores, processRewardRecords, getHighScores, getAllTimeHighScores, getGameRewards, type GameScore, type RewardRecord } from "src/lib/gaming"
+import { onMounted, ref, computed, onUnmounted } from "vue"
 
 const loading = ref(false)
 const rawGames = ref<GameScore[]>([])
@@ -108,6 +183,7 @@ const rawRewards = ref<RewardRecord[]>([])
 const selectedGame = ref<number | null>(null)
 const selectedCycle = ref<number | null>(null)
 const selectedStat = ref<string | null>(null)
+const globalConfig = ref<any>(null)
 
 // Computed properties for available options
 const availableGames = computed(() => {
@@ -122,7 +198,12 @@ const availableCycles = computed(() => {
   const cycles = new Set(rawGames.value
     .filter(g => selectedGame.value === null || g.game_id === selectedGame.value)
     .map(g => g.cycle_number))
-  return Array.from(cycles).map(cycle => ({ label: `Cycle ${cycle}`, value: cycle }))
+  return Array.from(cycles)
+    .sort((a, b) => b - a) // Sort in descending order
+    .map(cycle => ({
+      label: cycle,
+      value: cycle
+    }))
 })
 
 const availableStats = computed(() => {
@@ -133,7 +214,7 @@ const availableStats = computed(() => {
 const columns = [
   { name: "rank", label: "Rank", field: "rank" },
   { name: "player", label: "Player", field: "player" },
-  { name: "score", label: "Score", field: "score" },
+  { name: "score", label: "Stat", field: "score" },
   {
     name: "date",
     label: "Date",
@@ -186,9 +267,9 @@ const allTimeHighScores = computed(() => {
 })
 
 const currentRewards = computed(() => {
-  if (!selectedGame.value || !selectedCycle.value || !selectedStat.value) return []
+  if (!selectedGame.value || !selectedStat.value) return []
 
-  const rewards = getGameRewards(rawRewards.value, selectedGame.value, selectedCycle.value, selectedStat.value)
+  const rewards = getGameRewards(rawRewards.value, selectedGame.value, selectedStat.value)
   return rewards.flatMap(reward =>
     reward.rewarded_players.map((player, index) => ({
       player,
@@ -198,15 +279,65 @@ const currentRewards = computed(() => {
   )
 })
 
+const currentCycle = computed(() => {
+  if (!globalConfig.value?.cycles_initiation_time) return null
+  const initTime = new Date(globalConfig.value.cycles_initiation_time).getTime()
+  const now = Date.now()
+  const cycleLength = globalConfig.value.cycle_length_sec * 1000 // convert to ms
+  const elapsedTime = now - initTime
+  return Math.floor(elapsedTime / cycleLength)
+})
+
+const timeRemaining = ref("")
+const updateTimeRemaining = () => {
+  if (!globalConfig.value?.cycles_initiation_time) return
+
+  const now = Date.now()
+  const initTime = new Date(globalConfig.value.cycles_initiation_time).getTime()
+  const cycleLength = globalConfig.value.cycle_length_sec * 1000
+  const currentCycleStart = initTime + (Math.floor((now - initTime) / cycleLength) * cycleLength)
+  const cycleEnd = currentCycleStart + cycleLength
+  const remaining = cycleEnd - now
+
+  if (remaining <= 0) {
+    timeRemaining.value = "Cycle ending..."
+    // Refresh data when cycle ends
+    refreshData()
+    return
+  }
+
+  const hours = Math.floor(remaining / (1000 * 60 * 60))
+  const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60))
+  const seconds = Math.floor((remaining % (1000 * 60)) / 1000)
+
+  timeRemaining.value = `${hours}h ${minutes}m ${seconds}s`
+}
+
+let timerInterval:NodeJS.Timer | null = null
+
+onMounted(() => {
+  refreshData()
+  updateTimeRemaining()
+  timerInterval = setInterval(updateTimeRemaining, 1000)
+})
+
+onUnmounted(() => {
+  if (timerInterval) clearInterval(timerInterval)
+})
+
 const refreshData = async() => {
-  loading.value = true
   try {
-    const [gameRecords, rewardRecords] = await Promise.all([
+    loading.value = true
+    const [games, rewards, config] = await Promise.all([
       gameRecordsTable(),
-      gameRewardsTable()
+      gameRewardsTable(),
+      globalConfigTable()
     ])
-    rawGames.value = processHighScores(gameRecords)
-    rawRewards.value = processRewardRecords(rewardRecords)
+    console.log("Global config:", config)
+    rawGames.value = processHighScores(games)
+    rawRewards.value = processRewardRecords(rewards)
+    globalConfig.value = config[0]
+    console.log("Processed global config:", globalConfig.value)
     // Set initial selections if none are set
     const firstGame = availableGames.value?.[0]
     if (!selectedGame.value && firstGame) {
@@ -226,10 +357,6 @@ const refreshData = async() => {
     loading.value = false
   }
 }
-
-onMounted(() => {
-  refreshData()
-})
 </script>
 
 <style lang="scss">
