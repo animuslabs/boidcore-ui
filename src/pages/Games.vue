@@ -230,15 +230,12 @@ const rewardColumns = [
     name: "date",
     label: "Date",
     field: "distribution_time",
-    format: (val:string) => {
-      if (!val) return "-"
-      const date = new Date(val + "Z")
-      return date.toLocaleDateString(undefined, {
-        year: "numeric",
-        month: "short",
-        day: "numeric"
-      })
-    }
+    format: (val:string) => val ? new Date(val).toLocaleDateString() : "-"
+  },
+  {
+    name: "cycle",
+    label: "Cycle",
+    field: "cycle"
   }
 ]
 
@@ -274,7 +271,8 @@ const currentRewards = computed(() => {
     reward.rewarded_players.map((player, index) => ({
       player,
       reward: reward.player_rewards[index],
-      distribution_time: reward.distribution_time
+      distribution_time: reward.distribution_time,
+      cycle: reward.cycle_number
     }))
   )
 })
