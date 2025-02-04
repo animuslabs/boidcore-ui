@@ -1,4 +1,21 @@
 <template>
+  <q-banner
+    v-if="showBanner"
+    class="bg-secondary text-white q-mb-md"
+  >
+    <div class="col-6 text-bold text-center">
+      Games records are updated every 24 hours. Each cycle lasts 7 days. Top 5 players are rewarded every cycle.
+    </div>
+    <div class="col-6 text-right">
+      <q-btn
+        flat
+        dense
+        color="white"
+        label="Dismiss"
+        @click="showBanner = false"
+      />
+    </div>
+  </q-banner>
   <!-- Global Config Info -->
   <div
     v-if="globalConfig"
@@ -184,6 +201,7 @@ const selectedGame = ref<number | null>(null)
 const selectedCycle = ref<number | null>(null)
 const selectedStat = ref<string | null>(null)
 const globalConfig = ref<any>(null)
+const showBanner = ref(true)
 
 // Computed properties for available options
 const availableGames = computed(() => {
