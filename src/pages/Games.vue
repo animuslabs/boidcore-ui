@@ -301,7 +301,7 @@ const currentCycle = computed(() => {
   const now = Date.now()
   const cycleLength = globalConfig.value.cycle_length_sec * 1000 // convert to ms
   const elapsedTime = now - initTime
-  return Math.floor(elapsedTime / cycleLength)
+  return Math.floor(elapsedTime / cycleLength) + 1
 })
 
 const timeRemaining = ref("")
