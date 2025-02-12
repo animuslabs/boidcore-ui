@@ -4,7 +4,7 @@
     class="bg-secondary text-white q-mb-md"
   >
     <div class="col-6 text-bold text-center">
-      Games records are updated every 24 hours. Each cycle lasts 7 days. Top 5 players are rewarded every cycle.
+      Games records are updated every 24 hours. Each cycle lasts 7 days. Top 5 games are rewarded every cycle.
     </div>
     <div class="col-6 text-right">
       <q-btn
